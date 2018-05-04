@@ -39,7 +39,12 @@ describe('Rotors', function() {
                 it('is not empty', function() {
                     assert.isNotEmpty(turnOvers);
                 });
-                // TODO: each turnover should be a single capitalized letter
+                it('should have a single capital letter for each entry', function() {
+                    turnOvers.map(function(entry) {
+                        assert.isString(entry);
+                        assert.lengthOf(entry, 1);
+                    });
+                })
             });
             
         });
