@@ -20,3 +20,28 @@ describe('alphabetBiMap', function() {
         });
     });
 });
+
+describe('Rotors', function() {
+    for (var romanNumeral in Rotors) {
+        var rotor = Rotors[romanNumeral];
+        describe(`Rotor ${romanNumeral}`, function(){
+            it('is an object', function() {
+                assert.isObject(rotor);
+            });
+            it('has a wiring and a turnOvers property', function() {
+                assert.hasAllKeys(rotor, ['wiring', 'turnOvers']);
+            });
+            var {turnOvers} = rotor;
+            describe('turnOvers', function() {
+                it('is an Array', function() {
+                    assert.isArray(turnOvers);
+                });
+                it('is not empty', function() {
+                    assert.isNotEmpty(turnOvers);
+                });
+                // TODO: each turnover should be a single capitalized letter
+            });
+            
+        });
+    }
+})
