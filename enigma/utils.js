@@ -4,6 +4,6 @@ export function shiftNumber(letter1, letter2) {
     return (alphabetBiMap.get(letter2) - alphabetBiMap.get(letter1) + 26) % 26;
 }
 
-export function shiftLetter(number) {
-    return alphabetBiMap.inverse.get(number);
+export function shiftLetter(letter, number) {
+    return alphabetBiMap.inverse.get((alphabetBiMap.get(letter) + number + 26) % 26);
 }

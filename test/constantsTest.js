@@ -1,4 +1,4 @@
-import chai, {assert} from 'chai';
+import { assert } from 'chai';
 
 import {alphabetBiMap, Rotors, GreekWheels, Reflectors} from '../enigma/constants';
 
