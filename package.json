@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.17.10",
     "mnemonist": "^0.22.0"
   },
   "devDependencies": {
