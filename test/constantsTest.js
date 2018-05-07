@@ -25,50 +25,21 @@ describe('Rotors', function() {
     for (var romanNumeral in Rotors) {
         var rotor = Rotors[romanNumeral];
         describe(`Rotor ${romanNumeral}`, function(){
-            it('is an object', function() {
-                assert.isObject(rotor);
+            it('should have 26 entries', function() {
+                assert.equal(rotor.size, 26);
             });
-            
-            it('has a \'wiring\' and a \'turnOvers\' property', function() {
-                assert.hasAllKeys(rotor, ['wiring', 'turnOvers']);
-            });
-            
-            var { turnOvers } = rotor;
-            describe('turnOvers', function() {
-                it('is an Array', function() {
-                    assert.isArray(turnOvers);
-                });
-                
-                it('is not empty', function() {
-                    assert.isNotEmpty(turnOvers);
-                });
 
-                it('should have a single capital letter for each entry', function() {
-                    turnOvers.map(function(entry) {
-                        assert.isString(entry);
-                        assert.match(entry, /^[A-Z]{1}$/);
-                    });
+            it('should have an entry on the \'forward\' side for every letter of the alphabet', function() {
+                'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(letter) {
+                    assert.isDefined(rotor.get(letter));
                 });
             });
 
-            var { wiring } = rotor;
-            describe('wiring', function() {
-                it('should have 26 entries', function() {
-                    assert.equal(wiring.size, 26);
+            it('should have an entry on the \'reverse\' side for every letter of the alphabet', function() {
+                'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(letter) {
+                    assert.isDefined(rotor.inverse.get(letter));
                 });
-
-                it('should have an entry on the \'forward\' side for every letter of the alphabet', function() {
-                    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(letter) {
-                        assert.isDefined(wiring.get(letter));
-                    });
-                });
-
-                it('should have an entry on the \'reverse\' side for every letter of the alphabet', function() {
-                    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(letter) {
-                        assert.isDefined(wiring.inverse.get(letter));
-                    });
-                })
-            });
+            })
         });
     }
 })

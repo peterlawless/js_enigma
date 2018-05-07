@@ -1,4 +1,5 @@
-import { expect } from 'chai';
+import { expect, assert } from 'chai';
+import { reflectorKeys, greekWheelKeys, rotorKeys } from '../enigma/constants';
 
 import enigma from '../enigma';
 
@@ -85,5 +86,43 @@ describe('Enigma', function() {
                 });
             });
         });
+
+        // TODO: Scrambleboard tests
+    });
+    it('returns reversible encryption', function() {
+        // Make a random configuration for each test
+        function randomPick(someArray) {
+            return someArray[Math.floor(Math.random() * someArray.length)];
+        }
+        const alphabetArray = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const config = {
+            reflector: randomPick(reflectorKeys),
+            greekWheel: {
+                model: randomPick(greekWheelKeys),
+                exposedLetter: randomPick(alphabetArray)
+            },
+            slowRotor: {
+                model: randomPick(rotorKeys),
+                exposedLetter: randomPick(alphabetArray)
+            },
+            centerRotor: {
+                model: randomPick(rotorKeys),
+                exposedLetter: randomPick(alphabetArray)
+            },
+            fastRotor: {
+                model: randomPick(rotorKeys),
+                exposedLetter: randomPick(alphabetArray)
+            }
+        };
+
+        const plainLetter = randomPick(alphabetArray);
+        
+        const cipherLetter = enigma(plainLetter, config);
+
+        assert.equal(plainLetter, enigma(cipherLetter, config));
+
+        // Enigma would never map a letter back onto itself
+        // TODO: extract this assertion to a separate test
+        assert.notEqual(plainLetter, cipherLetter);
     });
 });
