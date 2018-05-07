@@ -76,19 +76,16 @@ export default function enigma(
 
     // Create an array expressing the configuration of the enigma
     var arr = [
-        {wheel: Rotors[config.fastRotor.model], letter: config.fastRotor.exposedLetter},
-        {wheel: Rotors[config.centerRotor.model], letter: config.centerRotor.exposedLetter},
-        {wheel: Rotors[config.slowRotor.model], letter: config.slowRotor.exposedLetter},
-        {wheel: GreekWheels[config.greekWheel.model], letter: config.greekWheel.exposedLetter}
+        {wheel: Rotors[config.fastRotor.model], rotorOffset: shiftNumber('A', config.fastRotor.exposedLetter)},
+        {wheel: Rotors[config.centerRotor.model], rotorOffset: shiftNumber('A', config.centerRotor.exposedLetter)},
+        {wheel: Rotors[config.slowRotor.model], rotorOffset: shiftNumber('A', config.slowRotor.exposedLetter)},
+        {wheel: GreekWheels[config.greekWheel.model], rotorOffset: shiftNumber('A', config.greekWheel.exposedLetter)}
     ];
 
-    // TODO: Refactor.  The rotor offsets do not change, so they could be calculated beforehand
-    // and put in the array the reducer is called on
     return arr.reduceRight(
         function(previousValue, currentValue){
             // after hitting the reflector, enigma works the same way, but the wiring connections are reversed
-            const rotorOffset = shiftNumber('A', currentValue.letter);
-            const connectionElement = shiftLetter(previousValue, rotorOffset);
+            const connectionElement = shiftLetter(previousValue, currentValue.rotorOffset);
             const totalShift = shiftNumber(connectionElement, currentValue.wheel.inverse.get(connectionElement));
             return shiftLetter(previousValue, totalShift)
         }, 
@@ -100,8 +97,7 @@ export default function enigma(
                     // function needs to return a LETTER
 
                     // find which letter is actually in currentValue's 'accumulator' position
-                    const rotorOffset = shiftNumber('A', currentValue.letter);
-                    const connectionElement = shiftLetter(accumulator, rotorOffset);
+                    const connectionElement = shiftLetter(accumulator, currentValue.rotorOffset);
 
                     // find the shift associated with that letter
                     const totalShift = shiftNumber(connectionElement, currentValue.wheel.get(connectionElement));
