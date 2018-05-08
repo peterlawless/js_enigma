@@ -83,7 +83,10 @@ export default function enigma(
     /*
         End Input Validation
     */
-    const scrambleBoardBiMap = BiMap.from(scrambleBoard);    
+    const scrambleBoardBiMap = BiMap.from(scrambleBoard);
+
+    // TODO: check for intersection in the scrambleBoard, i.e., two letters mapping to one
+    // TODO: limit size of scrambleBoard to 7(?) or however many cables were issued with the machine
     
     // Create an array expressing the configuration of the enigma
     var arr = [
@@ -97,7 +100,8 @@ export default function enigma(
     return scrambleBoardMapping( // the scrambleboard may map the cipherletter to a different letter on the lampboard
         arr.reduceRight(
             function(previousValue, currentValue){
-                // after hitting the reflector, enigma works the same way, but the wiring connections are reversed
+                // after hitting the reflector, enigma works the same way, but the wiring connections are reversed from this perspective,
+                // so we use the inverse mapping of the rotor/wheel
                 const connectionElement = shiftLetter(previousValue, currentValue.rotorOffset);
                 const totalShift = shiftNumber(connectionElement, currentValue.wheel.inverse.get(connectionElement));
                 return shiftLetter(previousValue, totalShift)
@@ -107,7 +111,6 @@ export default function enigma(
                     function(accumulator, currentValue) {
                         // accumulator is a LETTER, not a number
                         // currentValue is an element in arr
-                        // function needs to return a LETTER
 
                         // find which letter is actually in currentValue's 'accumulator' position
                         const connectionElement = shiftLetter(accumulator, currentValue.rotorOffset);
@@ -118,7 +121,10 @@ export default function enigma(
                         // return the letter having undergone that shift
                         return shiftLetter(accumulator, totalShift);
                     },
-                    scrambleBoardMapping(plainletter, scrambleBoardBiMap) // the scrambleboard may map the plainletter to a different contact on the entrywheel
+                    scrambleBoardMapping( // the scrambleboard may map the plainletter to a different contact on the entrywheel
+                        plainletter,
+                        scrambleBoardBiMap
+                    )
                 )
             )
         ),
