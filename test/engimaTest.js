@@ -44,7 +44,7 @@ describe('Enigma', function() {
                                 exposedLetter: 'C'
                             },
                             fastRotor: {
-                                model: 'II',
+                                model: 'III',
                                 exposedLetter: 'D'
                             }
                         };
@@ -87,7 +87,61 @@ describe('Enigma', function() {
             });
         });
 
-        // TODO: Scrambleboard tests
+        describe('scrambleboard', function() {
+
+            it('should throw an error if it defined but not an Object', function() {
+                expect(() => enigma(
+                    'A',
+                    {
+                        reflector: 'b',
+                        greekWheel: {
+                            model: 'beta',
+                            exposedLetter: 'A'
+                        },
+                        slowRotor: {
+                            model: 'I',
+                            exposedLetter: 'B'
+                        },
+                        centerRotor: {
+                            model: 'II',
+                            exposedLetter: 'C'
+                        },
+                        fastRotor: {
+                            model: 'III',
+                            exposedLetter: 'D'
+                        }
+                    },
+                    'foo'
+                )).to.throw('input \'scrambleBoard\' must be an Object');
+            });
+            it('should throw an error if any of the keys are not single uppercase letters', function() {
+                expect(() => enigma(
+                    'A',
+                    {
+                        reflector: 'b',
+                        greekWheel: {
+                            model: 'beta',
+                            exposedLetter: 'A'
+                        },
+                        slowRotor: {
+                            model: 'I',
+                            exposedLetter: 'B'
+                        },
+                        centerRotor: {
+                            model: 'II',
+                            exposedLetter: 'C'
+                        },
+                        fastRotor: {
+                            model: 'III',
+                            exposedLetter: 'D'
+                        }
+                    },
+                    {
+                        foo: 'bar'
+                    }
+                )).to.throw('all keys and values in input \'scrambleBoard\' must be single uppercase letters');
+            });
+        });
     });
     it('returns reversible encryption', function() {
         // Make a random configuration for each test

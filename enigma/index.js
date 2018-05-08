@@ -30,7 +30,7 @@ export default function enigma(
 
     // 'plainLetter' validation
     if (!isSingleLetter(plainletter)) {
-        throw Error('input \'plainLetter\' must be a single uppercase letter');
+        throw TypeError('input \'plainLetter\' must be a single uppercase letter');
     }
 
     // 'config.reflector' validation
@@ -39,7 +39,8 @@ export default function enigma(
     } else if (!Reflectors.hasOwnProperty(config.reflector)) {
         throw Error(`Invalid reflector model \'${config.reflector}\'`);
     }
-
+    
+    // remaining 'config' validation'
     ['greekWheel', 'slowRotor', 'centerRotor', 'fastRotor'].map((property, index) => {
         if (!config.hasOwnProperty(property)) {
             throw Error(`Missing required \'${property}\' property from config object`);
@@ -69,6 +70,15 @@ export default function enigma(
             }
         })
     })
+
+    // 'scrambleBoard' validation
+    if (scrambleBoard) {
+        if (!(scrambleBoard instanceof Object)) {
+            throw TypeError('input \'scrambleBoard\' must be an Object');
+        } else if (!(Object.keys(scrambleBoard).every(isSingleLetter) || Object.values(scrambleBoard).every(isSingleLetter))) {
+            throw TypeError('all keys and values in input \'scrambleBoard\' must be single uppercase letters');
+        }
+    }
 
     /*
         End Input Validation

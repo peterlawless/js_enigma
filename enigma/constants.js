@@ -292,6 +292,7 @@ export const GreekWheels = {
     })
 };
 
+// TODO: Simplify.  The reflectors do not need to be BiMap instances under current implementation.
 export const Reflectors = {
     b: BiMap.from({
         A: 'E',
