@@ -1,5 +1,7 @@
-import { shiftLetter, shiftNumber, isSingleLetter } from './utils';
-import { alphabetBiMap, EntryWheel, Rotors, GreekWheels, Reflectors } from './constants';
+import BiMap from 'mnemonist/bi-map';
+
+import { shiftLetter, shiftNumber, isSingleLetter, scrambleBoardMapping } from './utils';
+import { alphabetBiMap, Rotors, GreekWheels, Reflectors } from './constants';
 
 export default function enigma(
     plainletter,
@@ -22,7 +24,7 @@ export default function enigma(
             exposedLetter: ''
         }
     },
-    scrambleBoard = null
+    scrambleBoard = {}
 ) { 
     /*
         Begin Input Validation
@@ -72,18 +74,17 @@ export default function enigma(
     })
 
     // 'scrambleBoard' validation
-    if (scrambleBoard) {
-        if (!(scrambleBoard instanceof Object)) {
-            throw TypeError('input \'scrambleBoard\' must be an Object');
-        } else if (!(Object.keys(scrambleBoard).every(isSingleLetter) || Object.values(scrambleBoard).every(isSingleLetter))) {
-            throw TypeError('all keys and values in input \'scrambleBoard\' must be single uppercase letters');
-        }
+    if (!(scrambleBoard instanceof Object)) {
+        throw TypeError('input \'scrambleBoard\' must be an Object');
+    } else if (!(Object.keys(scrambleBoard).every(isSingleLetter) || Object.values(scrambleBoard).every(isSingleLetter))) {
+        throw TypeError('all keys and values in input \'scrambleBoard\' must be single uppercase letters');
     }
-
+    
     /*
         End Input Validation
     */
-
+    const scrambleBoardBiMap = BiMap.from(scrambleBoard);    
+    
     // Create an array expressing the configuration of the enigma
     var arr = [
         {wheel: Rotors[config.fastRotor.model], rotorOffset: shiftNumber('A', config.fastRotor.exposedLetter)},
@@ -92,31 +93,35 @@ export default function enigma(
         {wheel: GreekWheels[config.greekWheel.model], rotorOffset: shiftNumber('A', config.greekWheel.exposedLetter)}
     ];
 
-    return arr.reduceRight(
-        function(previousValue, currentValue){
-            // after hitting the reflector, enigma works the same way, but the wiring connections are reversed
-            const connectionElement = shiftLetter(previousValue, currentValue.rotorOffset);
-            const totalShift = shiftNumber(connectionElement, currentValue.wheel.inverse.get(connectionElement));
-            return shiftLetter(previousValue, totalShift)
-        }, 
-        Reflectors[config.reflector].get(
-            arr.reduce(
-                function(accumulator, currentValue) {
-                    // accumulator is a LETTER, not a number
-                    // currentValue is an element in arr
-                    // function needs to return a LETTER
 
-                    // find which letter is actually in currentValue's 'accumulator' position
-                    const connectionElement = shiftLetter(accumulator, currentValue.rotorOffset);
+    return scrambleBoardMapping( // the scrambleboard may map the cipherletter to a different letter on the lampboard
+        arr.reduceRight(
+            function(previousValue, currentValue){
+                // after hitting the reflector, enigma works the same way, but the wiring connections are reversed
+                const connectionElement = shiftLetter(previousValue, currentValue.rotorOffset);
+                const totalShift = shiftNumber(connectionElement, currentValue.wheel.inverse.get(connectionElement));
+                return shiftLetter(previousValue, totalShift)
+            }, 
+            Reflectors[config.reflector].get(
+                arr.reduce(
+                    function(accumulator, currentValue) {
+                        // accumulator is a LETTER, not a number
+                        // currentValue is an element in arr
+                        // function needs to return a LETTER
 
-                    // find the shift associated with that letter
-                    const totalShift = shiftNumber(connectionElement, currentValue.wheel.get(connectionElement));
+                        // find which letter is actually in currentValue's 'accumulator' position
+                        const connectionElement = shiftLetter(accumulator, currentValue.rotorOffset);
 
-                    // return the letter having undergone that shift
-                    return shiftLetter(accumulator, totalShift);
-                },
-                plainletter
+                        // find the shift associated with that letter
+                        const totalShift = shiftNumber(connectionElement, currentValue.wheel.get(connectionElement));
+
+                        // return the letter having undergone that shift
+                        return shiftLetter(accumulator, totalShift);
+                    },
+                    scrambleBoardMapping(plainletter, scrambleBoardBiMap) // the scrambleboard may map the plainletter to a different contact on the entrywheel
+                )
             )
-        )
+        ),
+        scrambleBoardBiMap
     );
 }
