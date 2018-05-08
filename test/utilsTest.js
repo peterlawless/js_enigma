@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-
-import { shiftNumber, shiftLetter, isSingleLetter } from '../enigma/utils';
+import BiMap from 'mnemonist/bi-map';
+import { shiftNumber, shiftLetter, isSingleLetter, scrambleBoardMapping } from '../enigma/utils';
 
 describe('shiftNumber', function() {
     it('given inputs \'A\' and \'B\', should return 1', function() {
@@ -33,5 +33,20 @@ describe('isSingleLetter', function() {
 
     it('should return true when given a single capital letter', function() {
         expect(isSingleLetter('A')).to.be.true;
+    });
+});
+
+describe('scrambleBoardMapping', function() {
+    const biMap = BiMap.from({A: 'B'});
+    it('should return the value associated with a key in the provided BiMap', function() {
+        expect(scrambleBoardMapping('A', biMap)).to.equal('B');
+    });
+
+    it('should return the value associated with a key in the provided BiMap (inverse)', function() {
+        expect(scrambleBoardMapping('B', biMap)).to.equal('A');
+    });
+
+    it('should return the letter provided in the first argument if that letter is not present in the BiMap', function() {
+        expect(scrambleBoardMapping('C', biMap)).to.equal('C');
     });
 });

@@ -12,7 +12,6 @@ export function isSingleLetter(letter) {
     return /^[A-Z]{1}$/.test(letter);
 }
 
-// TODO: Test
 export function scrambleBoardMapping(letter, scrambleBoard) {
     return scrambleBoard.get(letter) || scrambleBoard.inverse.get(letter) || letter;
 }
