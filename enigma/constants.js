@@ -352,6 +352,36 @@ export const Reflectors = {
     })
 };
 
+export const RotorTurnoverLetters = {
+    I: {
+        Q: true
+    },
+    II: {
+        E: true
+    },
+    III: {
+        V: true
+    },
+    IV: {
+        J: true
+    },
+    V: {
+        Z: true
+    },
+    VI: {
+        Z: true,
+        M: true
+    },
+    VII: {
+        Z: true,
+        M: true
+    },
+    VIII: {
+        Z: true,
+        M: true
+    }
+};
+
 export const rotorKeys = Object.keys(Rotors);
 export const reflectorKeys = Object.keys(Reflectors);
 export const greekWheelKeys = Object.keys(GreekWheels);
