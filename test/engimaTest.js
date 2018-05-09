@@ -88,58 +88,53 @@ describe('Enigma', function() {
         });
 
         describe('scrambleboard', function() {
+            const config = {
+                reflector: 'b',
+                greekWheel: {
+                    model: 'beta',
+                    exposedLetter: 'A'
+                },
+                slowRotor: {
+                    model: 'I',
+                    exposedLetter: 'B'
+                },
+                centerRotor: {
+                    model: 'II',
+                    exposedLetter: 'C'
+                },
+                fastRotor: {
+                    model: 'III',
+                    exposedLetter: 'D'
+                }
+            };
 
             it('should throw an error if it defined but not an Object', function() {
                 expect(() => enigma(
                     'A',
-                    {
-                        reflector: 'b',
-                        greekWheel: {
-                            model: 'beta',
-                            exposedLetter: 'A'
-                        },
-                        slowRotor: {
-                            model: 'I',
-                            exposedLetter: 'B'
-                        },
-                        centerRotor: {
-                            model: 'II',
-                            exposedLetter: 'C'
-                        },
-                        fastRotor: {
-                            model: 'III',
-                            exposedLetter: 'D'
-                        }
-                    },
+                    config,
                     'foo'
                 )).to.throw('input \'scrambleBoard\' must be an Object');
             });
+
             it('should throw an error if any of the keys are not single uppercase letters', function() {
                 expect(() => enigma(
                     'A',
-                    {
-                        reflector: 'b',
-                        greekWheel: {
-                            model: 'beta',
-                            exposedLetter: 'A'
-                        },
-                        slowRotor: {
-                            model: 'I',
-                            exposedLetter: 'B'
-                        },
-                        centerRotor: {
-                            model: 'II',
-                            exposedLetter: 'C'
-                        },
-                        fastRotor: {
-                            model: 'III',
-                            exposedLetter: 'D'
-                        }
-                    },
+                    config,
                     {
                         foo: 'bar'
                     }
                 )).to.throw('all keys and values in input \'scrambleBoard\' must be single uppercase letters');
+            });
+
+            it('should throw an error if there are duplicate mappings', function() {
+                expect(() => enigma(
+                    'A',
+                    config,
+                    {
+                        A: 'B',
+                        B: 'A'
+                    }
+                )).to.throw('duplicate mapping to letter');
             });
         });
     });

@@ -76,8 +76,6 @@ export default function enigma(
     // 'scrambleBoard' validation
     if (!(scrambleBoard instanceof Object)) {
         throw TypeError('input \'scrambleBoard\' must be an Object');
-    } else if (!(Object.keys(scrambleBoard).every(isSingleLetter) || Object.values(scrambleBoard).every(isSingleLetter))) {
-        throw TypeError('all keys and values in input \'scrambleBoard\' must be single uppercase letters');
     }
     
     /*
@@ -85,7 +83,16 @@ export default function enigma(
     */
     const scrambleBoardBiMap = BiMap.from(scrambleBoard);
 
-    // TODO: check for intersection in the scrambleBoard, i.e., two letters mapping to one
+    // one iteration for input validation
+    scrambleBoardBiMap.forEach((value, key) => {
+        if (!(isSingleLetter(key) || isSingleLetter(value))) {
+            throw Error('all keys and values in input \'scrambleBoard\' must be single uppercase letters');
+        }
+        if(scrambleBoardBiMap.inverse.has(value)) {
+            throw Error(`duplicate mapping to letter \'${value}\' in scrambleBoard`);
+        }
+    });
+
     // TODO: limit size of scrambleBoard to 7(?) or however many cables were issued with the machine
     
     // Create an array expressing the configuration of the enigma
