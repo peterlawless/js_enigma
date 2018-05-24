@@ -12,6 +12,6 @@ export function isSingleLetter(letter) {
     return /^[A-Z]{1}$/.test(letter);
 }
 
-export function scrambleBoardMapping(letter, scrambleBoard) {
-    return scrambleBoard.get(letter) || scrambleBoard.inverse.get(letter) || letter;
+export function bidirectionalMapFrom(letter, biMap) {
+    return biMap.get(letter) || biMap.inverse.get(letter) || letter;
 }

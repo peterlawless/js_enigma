@@ -1,6 +1,7 @@
 import BiMap from 'mnemonist/bi-map';
+import { flow } from 'lodash';
 
-import { shiftLetter, shiftNumber, isSingleLetter, scrambleBoardMapping } from './utils';
+import { shiftLetter, shiftNumber, isSingleLetter, bidirectionalMapFrom } from './utils';
 import { alphabetBiMap, Rotors, GreekWheels, Reflectors } from './constants';
 
 export default function enigma(
@@ -93,6 +94,10 @@ export default function enigma(
         }
     });
 
+    function scrambleBoardMapping(letter) {
+        return bidirectionalMapFrom(letter, scrambleBoardBiMap);
+    }
+
     // TODO: limit size of scrambleBoard to 7(?) or however many cables were issued with the machine
     
     // Create an array expressing the configuration of the enigma
@@ -103,9 +108,8 @@ export default function enigma(
         {wheel: GreekWheels[config.greekWheel.model], rotorOffset: shiftNumber('A', config.greekWheel.exposedLetter)}
     ];
 
-
-    return scrambleBoardMapping( // the scrambleboard may map the cipherletter to a different letter on the lampboard
-        arr.reduceRight(
+    function rotorScramble(letter) {
+        return arr.reduceRight(
             function(previousValue, currentValue){
                 // after hitting the reflector, enigma works the same way, but the wiring connections are reversed from this perspective,
                 // so we use the inverse mapping of the rotor/wheel
@@ -128,13 +132,11 @@ export default function enigma(
                         // return the letter having undergone that shift
                         return shiftLetter(accumulator, totalShift);
                     },
-                    scrambleBoardMapping( // the scrambleboard may map the plainletter to a different contact on the entrywheel
-                        plainletter,
-                        scrambleBoardBiMap
-                    )
+                    letter
                 )
             )
-        ),
-        scrambleBoardBiMap
-    );
+        )
+    }
+
+    return flow([scrambleBoardMapping, rotorScramble, scrambleBoardMapping])(plainletter);
 }
