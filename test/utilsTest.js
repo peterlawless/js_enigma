@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import BiMap from 'mnemonist/bi-map';
-import { shiftNumber, shiftLetter, isSingleLetter, bidirectionalMapFrom } from '../enigma/utils';
+import { shiftNumber, shiftLetter, isSingleLetter, bidirectionalMapFrom, alphabetLoopIncrement, alphabetLoopDecrement } from '../enigma/utils';
 
 describe('shiftNumber', function() {
     it('given inputs \'A\' and \'B\', should return 1', function() {
@@ -48,5 +48,25 @@ describe('bidirectionalMapFrom', function() {
 
     it('should return the letter provided in the first argument if that letter is not present in the BiMap', function() {
         expect(bidirectionalMapFrom('C', biMap)).to.equal('C');
+    });
+});
+
+describe('alphabetLoopIncrement', function() {
+    it('should return the next letter of the alphabet', function() {
+        expect(alphabetLoopIncrement('A')).to.equal('B');
+    });
+
+    it('should loop to the beginning of the alphabet from the end', function() {
+        expect(alphabetLoopIncrement('Z')).to.equal('A');
+    });
+});
+
+describe('alphabetLoopDecrement', function() {
+    it('should return the previous letter of the alphabet', function() {
+        expect(alphabetLoopDecrement('B')).to.equal('A');
+    });
+
+    it('should loop to the end of the alphabet from the beginning', function() {
+        expect(alphabetLoopDecrement('A')).to.equal('Z');
     });
 });

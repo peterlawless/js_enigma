@@ -15,3 +15,11 @@ export function isSingleLetter(letter) {
 export function bidirectionalMapFrom(letter, biMap) {
     return biMap.get(letter) || biMap.inverse.get(letter) || letter;
 }
+
+export function alphabetLoopIncrement(letter) {
+    return alphabetBiMap.inverse.get((alphabetBiMap.get(letter) + 27) % 26);
+}
+
+export function alphabetLoopDecrement(letter) {
+    return alphabetBiMap.inverse.get((alphabetBiMap.get(letter) + 25) % 26);
+}
