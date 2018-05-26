@@ -5,7 +5,7 @@ export function shiftNumber(letter1, letter2) {
 }
 
 export function shiftLetter(letter, number) {
-    return alphabetBiMap.inverse.get((alphabetBiMap.get(letter) + number + 26) % 26);
+    return getLetterFromNumber(alphabetBiMap.get(letter) + number);
 }
 
 export function isSingleLetter(letter) {
@@ -17,9 +17,13 @@ export function bidirectionalMapFrom(letter, biMap) {
 }
 
 export function alphabetLoopIncrement(letter) {
-    return alphabetBiMap.inverse.get((alphabetBiMap.get(letter) + 27) % 26);
+    return getLetterFromNumber(alphabetBiMap.get(letter) + 1);
 }
 
 export function alphabetLoopDecrement(letter) {
-    return alphabetBiMap.inverse.get((alphabetBiMap.get(letter) + 25) % 26);
+    return getLetterFromNumber(alphabetBiMap.get(letter) - 1);
+}
+
+function getLetterFromNumber(number) {
+    return alphabetBiMap.inverse.get((number + 26) % 26);
 }
