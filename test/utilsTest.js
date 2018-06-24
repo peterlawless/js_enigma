@@ -1,6 +1,14 @@
 import { expect } from 'chai';
 import BiMap from 'mnemonist/bi-map';
-import { shiftNumber, shiftLetter, isSingleLetter, bidirectionalMapFrom, alphabetLoopIncrement, alphabetLoopDecrement } from '../enigma/utils';
+import {
+    shiftNumber,
+    shiftLetter,
+    isSingleLetter,
+    bidirectionalMapFrom,
+    alphabetLoopIncrement,
+    alphabetLoopDecrement,
+    isOnTurnoverLetter
+} from '../enigma/utils';
 
 describe('shiftNumber', function() {
     it('given inputs \'A\' and \'B\', should return 1', function() {
@@ -68,5 +76,15 @@ describe('alphabetLoopDecrement', function() {
 
     it('should loop to the end of the alphabet from the beginning', function() {
         expect(alphabetLoopDecrement('A')).to.equal('Z');
+    });
+});
+
+describe('isOnTurnoverLetter', function() {
+    it('should return false for letters that are NOT turnover points for the given rotor', function() {
+        expect(isOnTurnoverLetter({ model: 'I', exposedLetter: 'A' })).to.equal(false);
+    });
+
+    it('should return true for letters that are turnover points for the given rotor', function() {
+        expect(isOnTurnoverLetter({ model: 'I', exposedLetter: 'Q' })).to.equal(true);
     });
 });

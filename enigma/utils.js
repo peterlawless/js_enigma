@@ -1,4 +1,4 @@
-import { alphabetBiMap } from './constants';
+import { alphabetBiMap, RotorTurnoverLetters } from './constants';
 
 export function shiftNumber(letter1, letter2) {
     return (alphabetBiMap.get(letter2) - alphabetBiMap.get(letter1) + 26) % 26;
@@ -26,4 +26,8 @@ export function alphabetLoopDecrement(letter) {
 
 function getLetterFromNumber(number) {
     return alphabetBiMap.inverse.get((number + 26) % 26);
+}
+
+export function isOnTurnoverLetter(rotor) {
+    return !!RotorTurnoverLetters[rotor.model][rotor.exposedLetter]
 }
