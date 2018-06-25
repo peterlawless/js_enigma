@@ -10,6 +10,15 @@ import {
     isOnTurnoverLetter,
     enigmaAdvance
 } from '../enigma/utils';
+import {
+    REFLECTOR,
+    GREEK_WHEEL,
+    FAST_ROTOR,
+    CENTER_ROTOR,
+    SLOW_ROTOR,
+    MODEL,
+    EXPOSED_LETTER
+} from '../enigma/constants';
 
 describe('shiftNumber', function() {
     it('given inputs \'A\' and \'B\', should return 1', function() {
@@ -82,74 +91,74 @@ describe('alphabetLoopDecrement', function() {
 
 describe('isOnTurnoverLetter', function() {
     it('should return false for letters that are NOT turnover points for the given rotor', function() {
-        expect(isOnTurnoverLetter({ model: 'I', exposedLetter: 'A' })).to.equal(false);
+        expect(isOnTurnoverLetter({ [MODEL]: 'I', [EXPOSED_LETTER]: 'A' })).to.equal(false);
     });
 
     it('should return true for letters that are turnover points for the given rotor', function() {
-        expect(isOnTurnoverLetter({ model: 'I', exposedLetter: 'Q' })).to.equal(true);
+        expect(isOnTurnoverLetter({ [MODEL]: 'I', [EXPOSED_LETTER]: 'Q' })).to.equal(true);
     });
 });
 
 describe('enigmaAdvance', function() {
     it('should only advance the fast rotor if neither the fast rotor nor the center rotor are on turnover letters', function() {
         const scrambler = {
-            reflector: 'b',
-            greekWheel: {
-                model: 'beta',
-                exposedLetter: 'A'
+            [REFLECTOR]: 'b',
+            [GREEK_WHEEL]: {
+                [MODEL]: 'beta',
+                [EXPOSED_LETTER]: 'A'
             },
-            slowRotor: {
-                model: 'I',
-                exposedLetter: 'A'
+            [SLOW_ROTOR]: {
+                [MODEL]: 'I',
+                [EXPOSED_LETTER]: 'A'
             },
-            centerRotor: {
-                model: 'II',
-                exposedLetter: 'A'
+            [CENTER_ROTOR]: {
+                [MODEL]: 'II',
+                [EXPOSED_LETTER]: 'A'
             },
-            fastRotor: {
-                model: 'III',
-                exposedLetter: 'A'
+            [FAST_ROTOR]: {
+                [MODEL]: 'III',
+                [EXPOSED_LETTER]: 'A'
             }
         };
-        expect(isOnTurnoverLetter(scrambler.fastRotor)).to.equal(false);
+        expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).to.equal(false);
         expect(enigmaAdvance(scrambler)).to.eql(
             Object.assign(
                 {},
                 scrambler,
-                { fastRotor: { model: 'III', exposedLetter: 'B' } }
+                { [FAST_ROTOR]: { [MODEL]: 'III', [EXPOSED_LETTER]: 'B' } }
             )
         );
     });
 
     it('should only advance the fast rotor and the center rotor if the fast rotor is on a turnover letter', function() {
         const scrambler = {
-            reflector: 'b',
-            greekWheel: {
-                model: 'beta',
-                exposedLetter: 'A'
+            [REFLECTOR]: 'b',
+            [GREEK_WHEEL]: {
+                [MODEL]: 'beta',
+                [EXPOSED_LETTER]: 'A'
             },
-            slowRotor: {
-                model: 'I',
-                exposedLetter: 'A'
+            [SLOW_ROTOR]: {
+                [MODEL]: 'I',
+                [EXPOSED_LETTER]: 'A'
             },
-            centerRotor: {
-                model: 'II',
-                exposedLetter: 'A'
+            [CENTER_ROTOR]: {
+                [MODEL]: 'II',
+                [EXPOSED_LETTER]: 'A'
             },
-            fastRotor: {
-                model: 'III',
-                exposedLetter: 'V'
+            [FAST_ROTOR]: {
+                [MODEL]: 'III',
+                [EXPOSED_LETTER]: 'V'
             }
         };
-        expect(isOnTurnoverLetter(scrambler.fastRotor)).to.equal(true);
-        expect(isOnTurnoverLetter(scrambler.centerRotor)).to.equal(false);
+        expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).to.equal(true);
+        expect(isOnTurnoverLetter(scrambler[CENTER_ROTOR])).to.equal(false);
         expect(enigmaAdvance(scrambler)).to.eql(
             Object.assign(
                 {},
                 scrambler,
                 {
-                    centerRotor: { model: 'II', exposedLetter: 'B' },
-                    fastRotor: { model: 'III', exposedLetter: 'W' }
+                    [CENTER_ROTOR]: { [MODEL]: 'II', [EXPOSED_LETTER]: 'B' },
+                    [FAST_ROTOR]: { [MODEL]: 'III', [EXPOSED_LETTER]: 'W' }
                 }
             )
         );
@@ -157,34 +166,34 @@ describe('enigmaAdvance', function() {
 
     it('should advance all three rotors if the both the fast rotor and center rotor are on turnover letters', function() {
         const scrambler = {
-            reflector: 'b',
-            greekWheel: {
-                model: 'beta',
-                exposedLetter: 'A'
+            [REFLECTOR]: 'b',
+            [GREEK_WHEEL]: {
+                [MODEL]: 'beta',
+                [EXPOSED_LETTER]: 'A'
             },
-            slowRotor: {
-                model: 'I',
-                exposedLetter: 'A'
+            [SLOW_ROTOR]: {
+                [MODEL]: 'I',
+                [EXPOSED_LETTER]: 'A'
             },
-            centerRotor: {
-                model: 'II',
-                exposedLetter: 'E'
+            [CENTER_ROTOR]: {
+                [MODEL]: 'II',
+                [EXPOSED_LETTER]: 'E'
             },
-            fastRotor: {
-                model: 'III',
-                exposedLetter: 'V'
+            [FAST_ROTOR]: {
+                [MODEL]: 'III',
+                [EXPOSED_LETTER]: 'V'
             }
         };
-        expect(isOnTurnoverLetter(scrambler.fastRotor)).to.equal(true);
-        expect(isOnTurnoverLetter(scrambler.centerRotor)).to.equal(true);
+        expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).to.equal(true);
+        expect(isOnTurnoverLetter(scrambler[CENTER_ROTOR])).to.equal(true);
         expect(enigmaAdvance(scrambler)).to.eql(
             Object.assign(
                 {},
                 scrambler,
                 {
-                    slowRotor: { model: 'I', exposedLetter: 'B' },
-                    centerRotor: { model: 'II', exposedLetter: 'F' },
-                    fastRotor: { model: 'III', exposedLetter: 'W' }
+                    [SLOW_ROTOR]: { [MODEL]: 'I', [EXPOSED_LETTER]: 'B' },
+                    [CENTER_ROTOR]: { [MODEL]: 'II', [EXPOSED_LETTER]: 'F' },
+                    [FAST_ROTOR]: { [MODEL]: 'III', [EXPOSED_LETTER]: 'W' }
                 }
             )
         );
@@ -192,36 +201,36 @@ describe('enigmaAdvance', function() {
 
     it('should NOT advance the slow rotor if the center rotor is on a turnover letter but the fast rotor is not', function() {
         const scrambler = {
-            reflector: 'b',
-            greekWheel: {
-                model: 'beta',
-                exposedLetter: 'A'
+            [REFLECTOR]: 'b',
+            [GREEK_WHEEL]: {
+                [MODEL]: 'beta',
+                [EXPOSED_LETTER]: 'A'
             },
-            slowRotor: {
-                model: 'I',
-                exposedLetter: 'A'
+            [SLOW_ROTOR]: {
+                [MODEL]: 'I',
+                [EXPOSED_LETTER]: 'A'
             },
-            centerRotor: {
-                model: 'II',
-                exposedLetter: 'E'
+            [CENTER_ROTOR]: {
+                [MODEL]: 'II',
+                [EXPOSED_LETTER]: 'E'
             },
-            fastRotor: {
-                model: 'III',
-                exposedLetter: 'U'
+            [FAST_ROTOR]: {
+                [MODEL]: 'III',
+                [EXPOSED_LETTER]: 'U'
             }
         };
-        expect(isOnTurnoverLetter(scrambler.fastRotor)).to.equal(false);
-        expect(isOnTurnoverLetter(scrambler.centerRotor)).to.equal(true);
+        expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).to.equal(false);
+        expect(isOnTurnoverLetter(scrambler[CENTER_ROTOR])).to.equal(true);
         expect(enigmaAdvance(scrambler)).to.eql(
             Object.assign(
                 {},
                 scrambler,
                 {
-                    slowRotor: { model: 'I', exposedLetter: 'A' },
-                    centerRotor: { model: 'II', exposedLetter: 'E' },
-                    fastRotor: { model: 'III', exposedLetter: 'V' }
+                    [SLOW_ROTOR]: { [MODEL]: 'I', [EXPOSED_LETTER]: 'A' },
+                    [CENTER_ROTOR]: { [MODEL]: 'II', [EXPOSED_LETTER]: 'E' },
+                    [FAST_ROTOR]: { [MODEL]: 'III', [EXPOSED_LETTER]: 'V' }
                 }
             )
         );
     });
-})
+});
