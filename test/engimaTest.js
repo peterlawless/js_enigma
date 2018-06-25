@@ -11,25 +11,25 @@ describe('Enigma', function() {
             });
         });
         
-        describe('config', function() {
+        describe('scrambler', function() {
 
             describe('reflector', function() {
-                it('should throw an error when called without the \'reflector\' property in the config object', function() {
+                it('should throw an error when called without the \'reflector\' property in the scrambler object', function() {
                     expect(() => enigma('A', {foo: 'bar'}))
-                      .to.throw('Missing \'reflector\' property in the config object');
+                      .to.throw('Missing \'reflector\' property in the scrambler object');
                 });
             
-                it('should throw an error when called with an invalid value for the \'reflector\' property in the config object', function() {
+                it('should throw an error when called with an invalid value for the \'reflector\' property in the scrambler object', function() {
                     expect(() => enigma('A', {reflector: 'foo'})).to.throw('Invalid reflector model');
                 });
             });
 
             ['greekWheel', 'slowRotor', 'centerRotor', 'fastRotor'].map(function(property) {
                 return describe(property, function() {
-                    let fullConfig;
+                    let fullscrambler;
 
                     beforeEach(function() {
-                        fullConfig = {
+                        fullscrambler = {
                             reflector: 'b',
                             greekWheel: {
                                 model: 'beta',
@@ -50,45 +50,45 @@ describe('Enigma', function() {
                         };
                     });
 
-                    it(`should throw an error without the \'${property}\' property in the config object`, function() {
-                        delete fullConfig[property];
+                    it(`should throw an error without the \'${property}\' property in the scrambler object`, function() {
+                        delete fullscrambler[property];
                         expect(() => enigma(
                             'A',
-                            fullConfig
-                        )).to.throw(`Missing required \'${property}\' property from config object`);
+                            fullscrambler
+                        )).to.throw(`Missing required \'${property}\' property from scrambler object`);
                     });
 
                     it(`should throw an error if the \'${property}\' is not an Object`, function() {
-                        fullConfig[property] = 'foo';
+                        fullscrambler[property] = 'foo';
                         expect(() => enigma(
                             'A',
-                            fullConfig
+                            fullscrambler
                         )).to.throw(`\'${property}\' must be an instance of an Object`);
                     });
 
                     ['model', 'exposedLetter'].map(prop => {
                         it(`should throw an error if the \'${property}.${prop}\' property is undefined`, function() {
-                            delete fullConfig[property][prop];
+                            delete fullscrambler[property][prop];
                             expect(() => enigma(
                                 'A',
-                                fullConfig
-                            )).to.throw(`Missing required \'${property}.${prop}\' property from config object`);
+                                fullscrambler
+                            )).to.throw(`Missing required \'${property}.${prop}\' property from scrambler object`);
                         });
                         
                         it(`should throw an error if the \'${property}.${prop}\' property is invalid`, function(){
-                            fullConfig[property][prop] = 'foo';
+                            fullscrambler[property][prop] = 'foo';
                             expect(() => enigma(
                                 'A',
-                                fullConfig
-                            )).to.throw(`Invalid \'${property}.${prop}\' property in config object`);
+                                fullscrambler
+                            )).to.throw(`Invalid \'${property}.${prop}\' property in scrambler object`);
                         });
                     });
                 });
             });
         });
 
-        describe('scrambleboard', function() {
-            const config = {
+        describe('plugBoard', function() {
+            const scrambler = {
                 reflector: 'b',
                 greekWheel: {
                     model: 'beta',
@@ -111,25 +111,25 @@ describe('Enigma', function() {
             it('should throw an error if it defined but not an Object', function() {
                 expect(() => enigma(
                     'A',
-                    config,
+                    scrambler,
                     'foo'
-                )).to.throw('input \'scrambleBoard\' must be an Object');
+                )).to.throw('input \'plugBoard\' must be an Object');
             });
 
             it('should throw an error if any of the keys are not single uppercase letters', function() {
                 expect(() => enigma(
                     'A',
-                    config,
+                    scrambler,
                     {
                         foo: 'bar'
                     }
-                )).to.throw('all keys and values in input \'scrambleBoard\' must be single uppercase letters');
+                )).to.throw('all keys and values in input \'plugBoard\' must be single uppercase letters');
             });
 
             it('should throw an error if there are duplicate mappings', function() {
                 expect(() => enigma(
                     'A',
-                    config,
+                    scrambler,
                     {
                         A: 'B',
                         B: 'A'
@@ -139,12 +139,12 @@ describe('Enigma', function() {
         });
     });
     it('returns reversible encryption', function() {
-        // Make a random configuration for each test
+        // Make a random scrambleruration for each test
         function randomPick(someArray) {
             return someArray[Math.floor(Math.random() * someArray.length)];
         }
         const alphabetArray = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        const config = {
+        const scrambler = {
             reflector: randomPick(reflectorKeys),
             greekWheel: {
                 model: randomPick(greekWheelKeys),
@@ -166,9 +166,9 @@ describe('Enigma', function() {
 
         const plainLetter = randomPick(alphabetArray);
         
-        const cipherLetter = enigma(plainLetter, config);
+        const cipherLetter = enigma(plainLetter, scrambler);
 
-        assert.equal(plainLetter, enigma(cipherLetter, config));
+        assert.equal(plainLetter, enigma(cipherLetter, scrambler));
 
         // Enigma would never map a letter back onto itself
         // TODO: extract this assertion to a separate test
