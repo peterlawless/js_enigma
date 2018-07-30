@@ -133,6 +133,9 @@ export default function enigma(
                     function(accumulator, currentValue) {
                         // accumulator is a LETTER, not a number
                         // currentValue is an element in arr
+                        
+                        // all shifts are calculated with respect to the orientation of the entrywheel,
+                        // whose elements are in alphabetical order with 'A' as the 'exposedLetter'
 
                         // find which letter is actually in currentValue's 'accumulator' position
                         const connectionElement = shiftLetter(accumulator, currentValue.rotorOffset);
