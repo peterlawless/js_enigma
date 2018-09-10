@@ -111,7 +111,7 @@ export default function enigma(
 
     // TODO: limit size of plugBoard to 7(?) or however many cables were issued with the machine
     
-    // Create an array expressing the scrambleruration of the enigma
+    // Create an array expressing the scrambler configuration of the enigma
     var arr = [
         {wheel: Rotors[scrambler[FAST_ROTOR][MODEL]], rotorOffset: shiftNumber('A', scrambler[FAST_ROTOR][EXPOSED_LETTER])},
         {wheel: Rotors[scrambler[CENTER_ROTOR][MODEL]], rotorOffset: shiftNumber('A', scrambler[CENTER_ROTOR][EXPOSED_LETTER])},
