@@ -101,7 +101,7 @@ export default function enigma(
             throw Error('all keys and values in input \'plugBoard\' must be single uppercase letters');
         }
         if(plugBoardBiMap.inverse.has(key)) {
-            throw Error(`duplicate mapping to letter \'${value}\' in plugBoard`);
+            throw Error(`duplicate mapping to letter \'${key}\' in plugBoard`);
         }
     });
 
