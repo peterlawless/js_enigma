@@ -6,19 +6,21 @@ import {
 } from "../enigma/constants";
 
 describe("constants", () => {
+  const alphabetArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
   describe("ALPHABET_BI_MAP", function () {
     it("should have 26 entries", function () {
       expect(ALPHABET_BI_MAP.size).toBe(26);
     });
 
     it("should have an entry for each letter of the alphabet", function () {
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter) {
+      alphabetArray.map(function (letter) {
         expect(ALPHABET_BI_MAP.get(letter)).toBeDefined();
       });
     });
 
     it("should have values mapping back to the letters of the alphabet in correct order", function () {
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter, index) {
+      alphabetArray.map(function (letter, index) {
         expect(ALPHABET_BI_MAP.inverse.get(index)).toBe(letter);
       });
     });
@@ -33,13 +35,13 @@ describe("constants", () => {
         });
 
         it("should have an entry on the 'forward' side for every letter of the alphabet", function () {
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter) {
+          alphabetArray.map(function (letter) {
             expect(rotor.get(letter)).toBeDefined();
           });
         });
 
         it("should have an entry on the 'reverse' side for every letter of the alphabet", function () {
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter) {
+          alphabetArray.map(function (letter) {
             expect(rotor.inverse.get(letter)).toBeDefined();
           });
         });
@@ -56,13 +58,13 @@ describe("constants", () => {
         });
 
         it("should have an entry on the 'forward' side for every letter of the alphabet", function () {
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter) {
+          alphabetArray.map(function (letter) {
             expect(greekWheel.get(letter)).toBeDefined();
           });
         });
 
         it("should have an entry on the 'reverse' side for every letter of the alphabet", function () {
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter) {
+          alphabetArray.map(function (letter) {
             expect(greekWheel.inverse.get(letter)).toBeDefined();
           });
         });
@@ -79,13 +81,13 @@ describe("constants", () => {
         });
 
         it("should have an entry on the 'forward' side for every letter of the alphabet", function () {
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter) {
+          alphabetArray.map(function (letter) {
             expect(reflector.get(letter)).toBeDefined();
           });
         });
 
         it("should have an entry on the 'reverse' side for every letter of the alphabet", function () {
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter) {
+          alphabetArray.map(function (letter) {
             expect(reflector.inverse.get(letter)).toBeDefined();
           });
         });
