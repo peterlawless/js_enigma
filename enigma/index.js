@@ -5,7 +5,7 @@ import {
   shiftLetter,
   shiftNumber,
   isSingleLetter,
-  getLetterMappingFrom,
+  getLetterMappingFrom
 } from "./utils";
 
 import {
@@ -18,7 +18,7 @@ import {
   CENTER_ROTOR,
   FAST_ROTOR,
   MODEL,
-  EXPOSED_LETTER,
+  EXPOSED_LETTER
 } from "./constants";
 
 export default function enigma(
@@ -27,20 +27,20 @@ export default function enigma(
     [REFLECTOR]: "",
     [GREEK_WHEEL]: {
       [MODEL]: "",
-      [EXPOSED_LETTER]: "",
+      [EXPOSED_LETTER]: ""
     },
     [SLOW_ROTOR]: {
       [MODEL]: "",
-      [EXPOSED_LETTER]: "",
+      [EXPOSED_LETTER]: ""
     },
     [CENTER_ROTOR]: {
       [MODEL]: "",
-      [EXPOSED_LETTER]: "",
+      [EXPOSED_LETTER]: ""
     },
     [FAST_ROTOR]: {
       [MODEL]: "",
-      [EXPOSED_LETTER]: "",
-    },
+      [EXPOSED_LETTER]: ""
+    }
   },
   plugBoard = {}
 ) {
@@ -58,9 +58,7 @@ export default function enigma(
     }
   });
 
-  function plugBoardMapping(letter) {
-    return getLetterMappingFrom(letter, plugBoardBiMap);
-  }
+  const getPlugboardLetter = getLetterMappingFrom(plugBoardBiMap);
 
   // TODO: limit size of plugBoard to 7(?) or however many cables were issued with the machine
 
@@ -68,20 +66,20 @@ export default function enigma(
   var arr = [
     {
       wheel: ROTORS[scrambler[FAST_ROTOR][MODEL]],
-      rotorOffset: shiftNumber("A", scrambler[FAST_ROTOR][EXPOSED_LETTER]),
+      rotorOffset: shiftNumber("A", scrambler[FAST_ROTOR][EXPOSED_LETTER])
     },
     {
       wheel: ROTORS[scrambler[CENTER_ROTOR][MODEL]],
-      rotorOffset: shiftNumber("A", scrambler[CENTER_ROTOR][EXPOSED_LETTER]),
+      rotorOffset: shiftNumber("A", scrambler[CENTER_ROTOR][EXPOSED_LETTER])
     },
     {
       wheel: ROTORS[scrambler[SLOW_ROTOR][MODEL]],
-      rotorOffset: shiftNumber("A", scrambler[SLOW_ROTOR][EXPOSED_LETTER]),
+      rotorOffset: shiftNumber("A", scrambler[SLOW_ROTOR][EXPOSED_LETTER])
     },
     {
       wheel: GREEK_WHEELS[scrambler[GREEK_WHEEL][MODEL]],
-      rotorOffset: shiftNumber("A", scrambler[GREEK_WHEEL][EXPOSED_LETTER]),
-    },
+      rotorOffset: shiftNumber("A", scrambler[GREEK_WHEEL][EXPOSED_LETTER])
+    }
   ];
 
   function rotorScramble(letter) {
@@ -126,5 +124,7 @@ export default function enigma(
     );
   }
 
-  return flow([plugBoardMapping, rotorScramble, plugBoardMapping])(plainletter);
+  return flow([getPlugboardLetter, rotorScramble, getPlugboardLetter])(
+    plainletter
+  );
 }

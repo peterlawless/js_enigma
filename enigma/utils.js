@@ -9,7 +9,7 @@ import {
   CENTER_ROTOR,
   FAST_ROTOR,
   MODEL,
-  EXPOSED_LETTER,
+  EXPOSED_LETTER
 } from "./constants";
 
 export function shiftNumber(letter1, letter2) {
@@ -26,9 +26,8 @@ export function isSingleLetter(letter) {
   return /^[A-Z]{1}$/.test(letter);
 }
 
-export function getLetterMappingFrom(letter, biMap) {
-  return biMap.get(letter) || biMap.inverse.get(letter) || letter;
-}
+export const getLetterMappingFrom = biMap => letter =>
+  biMap.get(letter) || biMap.inverse.get(letter) || letter;
 
 export function alphabetLoopIncrement(letter) {
   return getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + 1);
@@ -51,13 +50,13 @@ export function enigmaAdvance(scrambler) {
     ...scrambler,
     [FAST_ROTOR]: {
       ...scrambler[FAST_ROTOR],
-      exposedLetter: alphabetLoopIncrement(scrambler[FAST_ROTOR].exposedLetter),
+      exposedLetter: alphabetLoopIncrement(scrambler[FAST_ROTOR].exposedLetter)
     },
     [CENTER_ROTOR]: {
       ...scrambler[CENTER_ROTOR],
       exposedLetter: isOnTurnoverLetter(scrambler[FAST_ROTOR])
         ? alphabetLoopIncrement(scrambler[CENTER_ROTOR].exposedLetter)
-        : scrambler[CENTER_ROTOR].exposedLetter,
+        : scrambler[CENTER_ROTOR].exposedLetter
     },
     [SLOW_ROTOR]: {
       ...scrambler[SLOW_ROTOR],
@@ -65,8 +64,8 @@ export function enigmaAdvance(scrambler) {
         isOnTurnoverLetter(scrambler[FAST_ROTOR]) &&
         isOnTurnoverLetter(scrambler[CENTER_ROTOR])
           ? alphabetLoopIncrement(scrambler[SLOW_ROTOR].exposedLetter)
-          : scrambler[SLOW_ROTOR].exposedLetter,
-    },
+          : scrambler[SLOW_ROTOR].exposedLetter
+    }
   };
 }
 
@@ -74,55 +73,49 @@ function makeScrambler(
   scramblerConfig = {
     [GREEK_WHEEL]: {
       [MODEL]: "",
-      [EXPOSED_LETTER]: "",
+      [EXPOSED_LETTER]: ""
     },
     [SLOW_ROTOR]: {
       [MODEL]: "",
-      [EXPOSED_LETTER]: "",
+      [EXPOSED_LETTER]: ""
     },
     [CENTER_ROTOR]: {
       [MODEL]: "",
-      [EXPOSED_LETTER]: "",
+      [EXPOSED_LETTER]: ""
     },
     [FAST_ROTOR]: {
       [MODEL]: "",
-      [EXPOSED_LETTER]: "",
-    },
+      [EXPOSED_LETTER]: ""
+    }
   }
 ) {
   return [
     {
       wheel: ROTORS[scramblerConfig[FAST_ROTOR][MODEL]],
-      rotorOffset: shiftNumber(
-        "A",
-        scramblerConfig[FAST_ROTOR][EXPOSED_LETTER]
-      ),
+      rotorOffset: shiftNumber("A", scramblerConfig[FAST_ROTOR][EXPOSED_LETTER])
     },
     {
       wheel: ROTORS[scramblerConfig[CENTER_ROTOR][MODEL]],
       rotorOffset: shiftNumber(
         "A",
         scramblerConfig[CENTER_ROTOR][EXPOSED_LETTER]
-      ),
+      )
     },
     {
       wheel: ROTORS[scramblerConfig[SLOW_ROTOR][MODEL]],
-      rotorOffset: shiftNumber(
-        "A",
-        scramblerConfig[SLOW_ROTOR][EXPOSED_LETTER]
-      ),
+      rotorOffset: shiftNumber("A", scramblerConfig[SLOW_ROTOR][EXPOSED_LETTER])
     },
     {
       wheel: GREEK_WHEELS[scramblerConfig[GREEK_WHEEL][MODEL]],
       rotorOffset: shiftNumber(
         "A",
         scramblerConfig[GREEK_WHEEL][EXPOSED_LETTER]
-      ),
-    },
+      )
+    }
   ];
 }
 
-export const rotorScramble = (scrambler) => (reflector) => (letter) =>
+export const rotorScramble = scrambler => reflector => letter =>
   scrambler.reduceRight(
     function (previousValue, currentValue) {
       // after hitting the reflector, enigma works the same way, but the wiring connections are reversed from this perspective,

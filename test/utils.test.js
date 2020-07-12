@@ -7,7 +7,7 @@ import {
   alphabetLoopIncrement,
   alphabetLoopDecrement,
   isOnTurnoverLetter,
-  enigmaAdvance,
+  enigmaAdvance
 } from "../enigma/utils";
 import {
   REFLECTOR,
@@ -16,7 +16,7 @@ import {
   CENTER_ROTOR,
   SLOW_ROTOR,
   MODEL,
-  EXPOSED_LETTER,
+  EXPOSED_LETTER
 } from "../enigma/constants";
 
 describe("shiftNumber", function () {
@@ -54,17 +54,23 @@ describe("isSingleLetter", function () {
 });
 
 describe("getLetterMappingFrom", function () {
-  const biMap = BiMap.from({ A: "B" });
+  const plugBoard = BiMap.from({ A: "B" });
+  const getPlugboardLetter = getLetterMappingFrom(plugBoard);
+
+  it("should return a function", () => {
+    expect(getPlugboardLetter).toEqual(expect.any(Function));
+  });
+
   it("should return the value associated with a key in the provided BiMap", function () {
-    expect(getLetterMappingFrom("A", biMap)).toBe("B");
+    expect(getPlugboardLetter("A")).toBe("B");
   });
 
   it("should return the value associated with a key in the provided BiMap (inverse)", function () {
-    expect(getLetterMappingFrom("B", biMap)).toBe("A");
+    expect(getPlugboardLetter("B")).toBe("A");
   });
 
   it("should return the letter provided in the first argument if that letter is not present in the BiMap", function () {
-    expect(getLetterMappingFrom("C", biMap)).toBe("C");
+    expect(getPlugboardLetter("C")).toBe("C");
   });
 });
 
@@ -110,20 +116,20 @@ describe("enigmaAdvance", function () {
       [REFLECTOR]: "b",
       [GREEK_WHEEL]: {
         [MODEL]: "beta",
-        [EXPOSED_LETTER]: "A",
+        [EXPOSED_LETTER]: "A"
       },
       [SLOW_ROTOR]: {
         [MODEL]: "I",
-        [EXPOSED_LETTER]: "A",
+        [EXPOSED_LETTER]: "A"
       },
       [CENTER_ROTOR]: {
         [MODEL]: "II",
-        [EXPOSED_LETTER]: "A",
+        [EXPOSED_LETTER]: "A"
       },
       [FAST_ROTOR]: {
         [MODEL]: "III",
-        [EXPOSED_LETTER]: "A",
-      },
+        [EXPOSED_LETTER]: "A"
+      }
     };
   });
 
@@ -131,7 +137,7 @@ describe("enigmaAdvance", function () {
     expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).toBe(false);
     expect(enigmaAdvance(scrambler)).toMatchObject(
       Object.assign({}, scrambler, {
-        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "B" },
+        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "B" }
       })
     );
   });
@@ -143,7 +149,7 @@ describe("enigmaAdvance", function () {
     expect(enigmaAdvance(scrambler)).toMatchObject(
       Object.assign({}, scrambler, {
         [CENTER_ROTOR]: { [MODEL]: "II", [EXPOSED_LETTER]: "B" },
-        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "W" },
+        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "W" }
       })
     );
   });
@@ -157,7 +163,7 @@ describe("enigmaAdvance", function () {
       Object.assign({}, scrambler, {
         [SLOW_ROTOR]: { [MODEL]: "I", [EXPOSED_LETTER]: "B" },
         [CENTER_ROTOR]: { [MODEL]: "II", [EXPOSED_LETTER]: "F" },
-        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "W" },
+        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "W" }
       })
     );
   });
@@ -171,7 +177,7 @@ describe("enigmaAdvance", function () {
       Object.assign({}, scrambler, {
         [SLOW_ROTOR]: { [MODEL]: "I", [EXPOSED_LETTER]: "A" },
         [CENTER_ROTOR]: { [MODEL]: "II", [EXPOSED_LETTER]: "E" },
-        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "V" },
+        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "V" }
       })
     );
   });
