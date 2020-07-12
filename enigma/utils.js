@@ -1,9 +1,9 @@
 import {
-  alphabetBiMap,
-  RotorTurnoverLetters,
-  Rotors,
-  GreekWheels,
-  Reflectors,
+  ALPHABET_BI_MAP,
+  ROTOR_TURNOVER_LETTERS,
+  ROTORS,
+  GREEK_WHEELS,
+  REFLECTORS,
   GREEK_WHEEL,
   SLOW_ROTOR,
   CENTER_ROTOR,
@@ -13,11 +13,13 @@ import {
 } from "./constants";
 
 export function shiftNumber(letter1, letter2) {
-  return (alphabetBiMap.get(letter2) - alphabetBiMap.get(letter1) + 26) % 26;
+  return (
+    (ALPHABET_BI_MAP.get(letter2) - ALPHABET_BI_MAP.get(letter1) + 26) % 26
+  );
 }
 
 export function shiftLetter(letter, number) {
-  return getLetterFromNumber(alphabetBiMap.get(letter) + number);
+  return getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + number);
 }
 
 export function isSingleLetter(letter) {
@@ -29,19 +31,19 @@ export function bidirectionalMapFrom(letter, biMap) {
 }
 
 export function alphabetLoopIncrement(letter) {
-  return getLetterFromNumber(alphabetBiMap.get(letter) + 1);
+  return getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + 1);
 }
 
 export function alphabetLoopDecrement(letter) {
-  return getLetterFromNumber(alphabetBiMap.get(letter) - 1);
+  return getLetterFromNumber(ALPHABET_BI_MAP.get(letter) - 1);
 }
 
 function getLetterFromNumber(number) {
-  return alphabetBiMap.inverse.get((number + 26) % 26);
+  return ALPHABET_BI_MAP.inverse.get((number + 26) % 26);
 }
 
 export function isOnTurnoverLetter(rotor) {
-  return !!RotorTurnoverLetters[rotor.model][rotor.exposedLetter];
+  return !!ROTOR_TURNOVER_LETTERS[rotor.model][rotor.exposedLetter];
 }
 
 export function enigmaAdvance(scrambler) {
@@ -90,28 +92,28 @@ function makeScrambler(
 ) {
   return [
     {
-      wheel: Rotors[scramblerConfig[FAST_ROTOR][MODEL]],
+      wheel: ROTORS[scramblerConfig[FAST_ROTOR][MODEL]],
       rotorOffset: shiftNumber(
         "A",
         scramblerConfig[FAST_ROTOR][EXPOSED_LETTER]
       ),
     },
     {
-      wheel: Rotors[scramblerConfig[CENTER_ROTOR][MODEL]],
+      wheel: ROTORS[scramblerConfig[CENTER_ROTOR][MODEL]],
       rotorOffset: shiftNumber(
         "A",
         scramblerConfig[CENTER_ROTOR][EXPOSED_LETTER]
       ),
     },
     {
-      wheel: Rotors[scramblerConfig[SLOW_ROTOR][MODEL]],
+      wheel: ROTORS[scramblerConfig[SLOW_ROTOR][MODEL]],
       rotorOffset: shiftNumber(
         "A",
         scramblerConfig[SLOW_ROTOR][EXPOSED_LETTER]
       ),
     },
     {
-      wheel: GreekWheels[scramblerConfig[GREEK_WHEEL][MODEL]],
+      wheel: GREEK_WHEELS[scramblerConfig[GREEK_WHEEL][MODEL]],
       rotorOffset: shiftNumber(
         "A",
         scramblerConfig[GREEK_WHEEL][EXPOSED_LETTER]
@@ -135,7 +137,7 @@ export const rotorScramble = (scrambler) => (reflector) => (letter) =>
       );
       return shiftLetter(previousValue, totalShift);
     },
-    Reflectors[reflector].get(
+    REFLECTORS[reflector].get(
       scrambler.reduce(function (accumulator, currentValue) {
         // accumulator is a LETTER, not a number
         // currentValue is an element in scrambler

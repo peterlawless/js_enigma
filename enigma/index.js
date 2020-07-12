@@ -9,9 +9,9 @@ import {
 } from "./utils";
 
 import {
-  Rotors,
-  GreekWheels,
-  Reflectors,
+  ROTORS,
+  GREEK_WHEELS,
+  REFLECTORS,
   REFLECTOR,
   GREEK_WHEEL,
   SLOW_ROTOR,
@@ -67,19 +67,19 @@ export default function enigma(
   // Create an array expressing the scrambler configuration of the enigma
   var arr = [
     {
-      wheel: Rotors[scrambler[FAST_ROTOR][MODEL]],
+      wheel: ROTORS[scrambler[FAST_ROTOR][MODEL]],
       rotorOffset: shiftNumber("A", scrambler[FAST_ROTOR][EXPOSED_LETTER]),
     },
     {
-      wheel: Rotors[scrambler[CENTER_ROTOR][MODEL]],
+      wheel: ROTORS[scrambler[CENTER_ROTOR][MODEL]],
       rotorOffset: shiftNumber("A", scrambler[CENTER_ROTOR][EXPOSED_LETTER]),
     },
     {
-      wheel: Rotors[scrambler[SLOW_ROTOR][MODEL]],
+      wheel: ROTORS[scrambler[SLOW_ROTOR][MODEL]],
       rotorOffset: shiftNumber("A", scrambler[SLOW_ROTOR][EXPOSED_LETTER]),
     },
     {
-      wheel: GreekWheels[scrambler[GREEK_WHEEL][MODEL]],
+      wheel: GREEK_WHEELS[scrambler[GREEK_WHEEL][MODEL]],
       rotorOffset: shiftNumber("A", scrambler[GREEK_WHEEL][EXPOSED_LETTER]),
     },
   ];
@@ -99,7 +99,7 @@ export default function enigma(
         );
         return shiftLetter(previousValue, totalShift);
       },
-      Reflectors[scrambler[REFLECTOR]].get(
+      REFLECTORS[scrambler[REFLECTOR]].get(
         arr.reduce(function (accumulator, currentValue) {
           // accumulator is a LETTER, not a number
           // currentValue is an element in arr

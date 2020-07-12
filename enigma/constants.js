@@ -1,6 +1,6 @@
 import BiMap from "mnemonist/bi-map";
 
-export const alphabetBiMap = BiMap.from({
+export const ALPHABET_BI_MAP = BiMap.from({
   A: 0,
   B: 1,
   C: 2,
@@ -29,7 +29,7 @@ export const alphabetBiMap = BiMap.from({
   Z: 25,
 });
 
-export const Rotors = {
+export const ROTORS = {
   I: BiMap.from({
     A: "E",
     B: "K",
@@ -256,7 +256,7 @@ export const Rotors = {
   }),
 };
 
-export const GreekWheels = {
+export const GREEK_WHEELS = {
   beta: BiMap.from({
     A: "L",
     B: "E",
@@ -316,7 +316,7 @@ export const GreekWheels = {
 };
 
 // TODO: Simplify.  The reflectors do not need to be BiMap instances under current implementation.
-export const Reflectors = {
+export const REFLECTORS = {
   b: BiMap.from({
     A: "E",
     B: "N",
@@ -375,7 +375,7 @@ export const Reflectors = {
   }),
 };
 
-export const RotorTurnoverLetters = {
+export const ROTOR_TURNOVER_LETTERS = {
   I: {
     Q: true,
   },

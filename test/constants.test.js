@@ -1,32 +1,32 @@
 import {
-  alphabetBiMap,
-  Rotors,
-  GreekWheels,
-  Reflectors,
+  ALPHABET_BI_MAP,
+  ROTORS,
+  GREEK_WHEELS,
+  REFLECTORS,
 } from "../enigma/constants";
 
 describe("constants", () => {
-  describe("alphabetBiMap", function () {
+  describe("ALPHABET_BI_MAP", function () {
     it("should have 26 entries", function () {
-      expect(alphabetBiMap.size).toBe(26);
+      expect(ALPHABET_BI_MAP.size).toBe(26);
     });
 
     it("should have an entry for each letter of the alphabet", function () {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter) {
-        expect(alphabetBiMap.get(letter)).toBeDefined();
+        expect(ALPHABET_BI_MAP.get(letter)).toBeDefined();
       });
     });
 
     it("should have values mapping back to the letters of the alphabet in correct order", function () {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (letter, index) {
-        expect(alphabetBiMap.inverse.get(index)).toBe(letter);
+        expect(ALPHABET_BI_MAP.inverse.get(index)).toBe(letter);
       });
     });
   });
 
-  describe("Rotors", function () {
-    for (var romanNumeral in Rotors) {
-      var rotor = Rotors[romanNumeral];
+  describe("ROTORS", function () {
+    for (var romanNumeral in ROTORS) {
+      var rotor = ROTORS[romanNumeral];
       describe(`Rotor ${romanNumeral}`, function () {
         it("should have 26 entries", function () {
           expect(rotor.size).toBe(26);
@@ -48,8 +48,8 @@ describe("constants", () => {
   });
 
   describe("Greek Wheels", function () {
-    for (var letter in GreekWheels) {
-      var greekWheel = GreekWheels[letter];
+    for (var letter in GREEK_WHEELS) {
+      var greekWheel = GREEK_WHEELS[letter];
       describe(letter, function () {
         it("should have 26 entries", function () {
           expect(greekWheel.size).toBe(26);
@@ -70,9 +70,9 @@ describe("constants", () => {
     }
   });
 
-  describe("Reflectors", function () {
-    for (var letter in Reflectors) {
-      var reflector = Reflectors[letter];
+  describe("REFLECTORS", function () {
+    for (var letter in REFLECTORS) {
+      var reflector = REFLECTORS[letter];
       describe(`UKW-${letter}`, function () {
         it("should have 26 entries", function () {
           expect(reflector.size).toBe(26);

@@ -1,4 +1,4 @@
-import { Reflectors, GreekWheels, Rotors } from "../enigma/constants";
+import { REFLECTORS, GREEK_WHEELS, ROTORS } from "../enigma/constants";
 
 import enigma from "../enigma";
 
@@ -9,9 +9,9 @@ describe("Enigma", function () {
       return someArray[Math.floor(Math.random() * someArray.length)];
     }
     const alphabetArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    const rotorKeys = Object.keys(Rotors);
-    const reflectorKeys = Object.keys(Reflectors);
-    const greekWheelKeys = Object.keys(GreekWheels);
+    const rotorKeys = Object.keys(ROTORS);
+    const reflectorKeys = Object.keys(REFLECTORS);
+    const greekWheelKeys = Object.keys(GREEK_WHEELS);
 
     const scrambler = {
       reflector: randomPick(reflectorKeys),
