@@ -3,7 +3,7 @@ import {
   shiftNumber,
   shiftLetter,
   isSingleLetter,
-  bidirectionalMapFrom,
+  getLetterMappingFrom,
   alphabetLoopIncrement,
   alphabetLoopDecrement,
   isOnTurnoverLetter,
@@ -53,18 +53,18 @@ describe("isSingleLetter", function () {
   });
 });
 
-describe("bidirectionalMapFrom", function () {
+describe("getLetterMappingFrom", function () {
   const biMap = BiMap.from({ A: "B" });
   it("should return the value associated with a key in the provided BiMap", function () {
-    expect(bidirectionalMapFrom("A", biMap)).toBe("B");
+    expect(getLetterMappingFrom("A", biMap)).toBe("B");
   });
 
   it("should return the value associated with a key in the provided BiMap (inverse)", function () {
-    expect(bidirectionalMapFrom("B", biMap)).toBe("A");
+    expect(getLetterMappingFrom("B", biMap)).toBe("A");
   });
 
   it("should return the letter provided in the first argument if that letter is not present in the BiMap", function () {
-    expect(bidirectionalMapFrom("C", biMap)).toBe("C");
+    expect(getLetterMappingFrom("C", biMap)).toBe("C");
   });
 });
 

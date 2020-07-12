@@ -5,7 +5,7 @@ import {
   shiftLetter,
   shiftNumber,
   isSingleLetter,
-  bidirectionalMapFrom,
+  getLetterMappingFrom,
 } from "./utils";
 
 import {
@@ -54,12 +54,12 @@ export default function enigma(
       );
     }
     if (plugBoardBiMap.inverse.has(key)) {
-      throw Error(`duplicate mapping to letter \'${key}\' in plugBoard`);
+      throw Error(`duplicate mapping to letter '${key}' in plugBoard`);
     }
   });
 
   function plugBoardMapping(letter) {
-    return bidirectionalMapFrom(letter, plugBoardBiMap);
+    return getLetterMappingFrom(letter, plugBoardBiMap);
   }
 
   // TODO: limit size of plugBoard to 7(?) or however many cables were issued with the machine

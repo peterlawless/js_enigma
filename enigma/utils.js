@@ -26,7 +26,7 @@ export function isSingleLetter(letter) {
   return /^[A-Z]{1}$/.test(letter);
 }
 
-export function bidirectionalMapFrom(letter, biMap) {
+export function getLetterMappingFrom(letter, biMap) {
   return biMap.get(letter) || biMap.inverse.get(letter) || letter;
 }
 
