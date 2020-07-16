@@ -1,42 +1,42 @@
 import BiMap from "mnemonist/bi-map";
 import {
-  shiftNumber,
-  shiftLetter,
+  compose,
+  distanceBetweenLetters,
+  getLetterPlusShift,
   isSingleLetter,
   getLetterMappingFrom,
   alphabetLoopIncrement,
   alphabetLoopDecrement,
-  isOnTurnoverLetter,
-  enigmaAdvance
+  isOnTurnoverLetter
 } from "../enigma/utils";
-import {
-  REFLECTOR,
-  GREEK_WHEEL,
-  FAST_ROTOR,
-  CENTER_ROTOR,
-  SLOW_ROTOR,
-  MODEL,
-  EXPOSED_LETTER
-} from "../enigma/constants";
+import { MODEL, EXPOSED_LETTER } from "../enigma/constants";
 
-describe("shiftNumber", function () {
+describe("distaceBetweenLetters", function () {
   it("given inputs 'A' and 'B', should return 1", function () {
-    expect(shiftNumber("A", "B")).toBe(1);
+    expect(distanceBetweenLetters("A", "B")).toBe(1);
   });
 
   it("given inputs 'A' and 'Z', should return 25", function () {
-    expect(shiftNumber("A", "Z")).toBe(25);
+    expect(distanceBetweenLetters("A", "Z")).toBe(25);
   });
 });
 
-describe("shiftLetter", function () {
+describe("getLetterPlusShift", function () {
   it("given inputs 'A' and 1, should return 'B'", function () {
-    expect(shiftLetter("A", 1)).toBe("B");
+    expect(getLetterPlusShift("A", 1)).toBe("B");
   });
 
   it("given inputs 'Z' and 2, should return 'B'", function () {
-    expect(shiftLetter("Z", 2)).toBe("B");
+    expect(getLetterPlusShift("Z", 2)).toBe("B");
   });
+});
+
+describe("compose", () => {
+  const b = jest.fn().mockImplementation(x => x + "b");
+  const c = jest.fn().mockImplementation(x => x + "c");
+  expect(compose(c, b)("a")).toBe("abc");
+  expect(b).toHaveBeenCalledWith("a");
+  expect(c).toHaveBeenCalledWith("ab");
 });
 
 describe("isSingleLetter", function () {
@@ -104,81 +104,6 @@ describe("isOnTurnoverLetter", function () {
   it("should return true for letters that are turnover points for the given rotor", function () {
     expect(isOnTurnoverLetter({ [MODEL]: "I", [EXPOSED_LETTER]: "Q" })).toBe(
       true
-    );
-  });
-});
-
-describe("enigmaAdvance", function () {
-  let scrambler;
-
-  beforeEach(function () {
-    scrambler = {
-      [REFLECTOR]: "b",
-      [GREEK_WHEEL]: {
-        [MODEL]: "beta",
-        [EXPOSED_LETTER]: "A"
-      },
-      [SLOW_ROTOR]: {
-        [MODEL]: "I",
-        [EXPOSED_LETTER]: "A"
-      },
-      [CENTER_ROTOR]: {
-        [MODEL]: "II",
-        [EXPOSED_LETTER]: "A"
-      },
-      [FAST_ROTOR]: {
-        [MODEL]: "III",
-        [EXPOSED_LETTER]: "A"
-      }
-    };
-  });
-
-  it("should only advance the fast rotor if neither the fast rotor nor the center rotor are on turnover letters", function () {
-    expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).toBe(false);
-    expect(enigmaAdvance(scrambler)).toMatchObject(
-      Object.assign({}, scrambler, {
-        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "B" }
-      })
-    );
-  });
-
-  it("should only advance the fast rotor and the center rotor if the fast rotor is on a turnover letter", function () {
-    scrambler[FAST_ROTOR][EXPOSED_LETTER] = "V";
-    expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).toBe(true);
-    expect(isOnTurnoverLetter(scrambler[CENTER_ROTOR])).toBe(false);
-    expect(enigmaAdvance(scrambler)).toMatchObject(
-      Object.assign({}, scrambler, {
-        [CENTER_ROTOR]: { [MODEL]: "II", [EXPOSED_LETTER]: "B" },
-        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "W" }
-      })
-    );
-  });
-
-  it("should advance all three rotors if the both the fast rotor and center rotor are on turnover letters", function () {
-    scrambler[CENTER_ROTOR][EXPOSED_LETTER] = "E";
-    scrambler[FAST_ROTOR][EXPOSED_LETTER] = "V";
-    expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).toBe(true);
-    expect(isOnTurnoverLetter(scrambler[CENTER_ROTOR])).toBe(true);
-    expect(enigmaAdvance(scrambler)).toMatchObject(
-      Object.assign({}, scrambler, {
-        [SLOW_ROTOR]: { [MODEL]: "I", [EXPOSED_LETTER]: "B" },
-        [CENTER_ROTOR]: { [MODEL]: "II", [EXPOSED_LETTER]: "F" },
-        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "W" }
-      })
-    );
-  });
-
-  it("should NOT advance the slow rotor if the center rotor is on a turnover letter but the fast rotor is not", function () {
-    scrambler[CENTER_ROTOR][EXPOSED_LETTER] = "E";
-    scrambler[FAST_ROTOR][EXPOSED_LETTER] = "U";
-    expect(isOnTurnoverLetter(scrambler[FAST_ROTOR])).toBe(false);
-    expect(isOnTurnoverLetter(scrambler[CENTER_ROTOR])).toBe(true);
-    expect(enigmaAdvance(scrambler)).toMatchObject(
-      Object.assign({}, scrambler, {
-        [SLOW_ROTOR]: { [MODEL]: "I", [EXPOSED_LETTER]: "A" },
-        [CENTER_ROTOR]: { [MODEL]: "II", [EXPOSED_LETTER]: "E" },
-        [FAST_ROTOR]: { [MODEL]: "III", [EXPOSED_LETTER]: "V" }
-      })
     );
   });
 });

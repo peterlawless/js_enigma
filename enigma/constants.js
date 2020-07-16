@@ -26,7 +26,7 @@ export const ALPHABET_BI_MAP = BiMap.from({
   W: 22,
   X: 23,
   Y: 24,
-  Z: 25,
+  Z: 25
 });
 
 export const ROTORS = {
@@ -56,7 +56,7 @@ export const ROTORS = {
     W: "B",
     X: "R",
     Y: "C",
-    Z: "J",
+    Z: "J"
   }),
   II: BiMap.from({
     A: "A",
@@ -84,7 +84,7 @@ export const ROTORS = {
     W: "F",
     X: "V",
     Y: "O",
-    Z: "E",
+    Z: "E"
   }),
   III: BiMap.from({
     A: "B",
@@ -112,7 +112,7 @@ export const ROTORS = {
     W: "U",
     X: "S",
     Y: "Q",
-    Z: "O",
+    Z: "O"
   }),
   IV: BiMap.from({
     A: "E",
@@ -140,7 +140,7 @@ export const ROTORS = {
     W: "C",
     X: "M",
     Y: "W",
-    Z: "B",
+    Z: "B"
   }),
   V: BiMap.from({
     A: "V",
@@ -168,7 +168,7 @@ export const ROTORS = {
     W: "F",
     X: "E",
     Y: "C",
-    Z: "K",
+    Z: "K"
   }),
   VI: BiMap.from({
     A: "J",
@@ -196,7 +196,7 @@ export const ROTORS = {
     W: "I",
     X: "C",
     Y: "T",
-    Z: "W",
+    Z: "W"
   }),
   VII: BiMap.from({
     A: "N",
@@ -224,7 +224,7 @@ export const ROTORS = {
     W: "K",
     X: "Q",
     Y: "D",
-    Z: "T",
+    Z: "T"
   }),
   VIII: BiMap.from({
     A: "F",
@@ -252,8 +252,8 @@ export const ROTORS = {
     W: "U",
     X: "Y",
     Y: "G",
-    Z: "V",
-  }),
+    Z: "V"
+  })
 };
 
 export const GREEK_WHEELS = {
@@ -283,7 +283,7 @@ export const GREEK_WHEELS = {
     W: "U",
     X: "H",
     Y: "O",
-    Z: "S",
+    Z: "S"
   }),
   gamma: BiMap.from({
     A: "F",
@@ -311,98 +311,72 @@ export const GREEK_WHEELS = {
     W: "V",
     X: "G",
     Y: "J",
-    Z: "D",
-  }),
+    Z: "D"
+  })
 };
 
-// TODO: Simplify.  The reflectors do not need to be BiMap instances under current implementation.
 export const REFLECTORS = {
   b: BiMap.from({
     A: "E",
     B: "N",
     C: "K",
     D: "Q",
-    E: "A",
     F: "U",
     G: "Y",
     H: "W",
     I: "J",
-    J: "I",
-    K: "C",
     L: "O",
     M: "P",
-    N: "B",
-    O: "L",
-    P: "M",
-    Q: "D",
     R: "X",
     S: "Z",
-    T: "V",
-    U: "F",
-    V: "T",
-    W: "H",
-    X: "R",
-    Y: "G",
-    Z: "S",
+    T: "V"
   }),
   c: BiMap.from({
     A: "R",
     B: "D",
     C: "O",
-    D: "B",
     E: "J",
     F: "N",
     G: "T",
     H: "K",
     I: "V",
-    J: "E",
-    K: "H",
     L: "M",
-    M: "L",
-    N: "F",
-    O: "C",
     P: "W",
     Q: "Z",
-    R: "A",
     S: "X",
-    T: "G",
-    U: "Y",
-    V: "I",
-    W: "P",
-    X: "S",
-    Y: "U",
-    Z: "Q",
-  }),
+    U: "Y"
+  })
 };
 
+// TODO: Merge these in as properties of the ROTORS themselves
 export const ROTOR_TURNOVER_LETTERS = {
   I: {
-    Q: true,
+    Q: true
   },
   II: {
-    E: true,
+    E: true
   },
   III: {
-    V: true,
+    V: true
   },
   IV: {
-    J: true,
+    J: true
   },
   V: {
-    Z: true,
+    Z: true
   },
   VI: {
     Z: true,
-    M: true,
+    M: true
   },
   VII: {
     Z: true,
-    M: true,
+    M: true
   },
   VIII: {
     Z: true,
-    M: true,
-  },
+    M: true
+  }
 };
 
 export const REFLECTOR = "reflector";

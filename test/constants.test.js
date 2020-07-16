@@ -2,7 +2,7 @@ import {
   ALPHABET_BI_MAP,
   ROTORS,
   GREEK_WHEELS,
-  REFLECTORS,
+  REFLECTORS
 } from "../enigma/constants";
 
 describe("constants", () => {
@@ -72,32 +72,19 @@ describe("constants", () => {
     }
   });
 
-  describe("REFLECTORS", function () {
-    for (var letter in REFLECTORS) {
-      var reflector = REFLECTORS[letter];
-      describe(`UKW-${letter}`, function () {
-        it("should have 26 entries", function () {
-          expect(reflector.size).toBe(26);
-        });
+  describe.each(Object.entries(REFLECTORS))("%0", (_, reflector) => {
+    it("should have 13 entries", () => {
+      expect(reflector.size).toBe(13);
+    });
 
-        it("should have an entry on the 'forward' side for every letter of the alphabet", function () {
-          alphabetArray.map(function (letter) {
-            expect(reflector.get(letter)).toBeDefined();
-          });
-        });
-
-        it("should have an entry on the 'reverse' side for every letter of the alphabet", function () {
-          alphabetArray.map(function (letter) {
-            expect(reflector.inverse.get(letter)).toBeDefined();
-          });
-        });
-
-        it("has reversible entries", function () {
-          reflector.forEach(function (value, key) {
-            expect(reflector.inverse.get(value)).toBe(key);
-          });
-        });
-      });
-    }
+    it("should represent each letter of the alphabet exactly once", () => {
+      expect(
+        alphabetArray.every(
+          letter =>
+            (reflector.get(letter) && !reflector.inverse.get(letter)) ||
+            (reflector.inverse.get(letter) && !reflector.get(letter))
+        )
+      );
+    });
   });
 });
