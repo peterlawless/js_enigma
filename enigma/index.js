@@ -1,9 +1,9 @@
 import BiMap from "mnemonist/bi-map";
-import { flow } from "lodash";
 
 import {
-  shiftLetter,
-  shiftNumber,
+  compose,
+  getLetterPlusShift,
+  distanceBetweenLetters,
   isSingleLetter,
   getLetterMappingFrom
 } from "./utils";
@@ -20,6 +20,17 @@ import {
   MODEL,
   EXPOSED_LETTER
 } from "./constants";
+
+// what doesn't change?
+// reflector, plugboard, greek wheel, rotor MODELS
+// what does change?
+// plaintext letter, rotor exposed letters
+
+// Needed utilities: makeM4Reflector(reflectorModel, greekWheelModel, greekWheelExposedLetter),
+// makeRotor(rotorModel, exposedLetter) these can handle validation, too
+
+// (reflector, greekwheel = , [rotorModels], plugboard ) => ([rotorLetters], plaintextLeter) => ciphertextLetter
+// const enigma = (reflector, greekWheel, rotorModels, plugBoard) =>
 
 export default function enigma(
   plainletter,
@@ -59,6 +70,9 @@ export default function enigma(
   });
 
   const getPlugboardLetter = getLetterMappingFrom(plugBoardBiMap);
+  const getReflectorLetter = getLetterMappingFrom(
+    REFLECTORS[scrambler[REFLECTOR]]
+  );
 
   // TODO: limit size of plugBoard to 7(?) or however many cables were issued with the machine
 
@@ -66,19 +80,31 @@ export default function enigma(
   var arr = [
     {
       wheel: ROTORS[scrambler[FAST_ROTOR][MODEL]],
-      rotorOffset: shiftNumber("A", scrambler[FAST_ROTOR][EXPOSED_LETTER])
+      rotorOffset: distanceBetweenLetters(
+        "A",
+        scrambler[FAST_ROTOR][EXPOSED_LETTER]
+      )
     },
     {
       wheel: ROTORS[scrambler[CENTER_ROTOR][MODEL]],
-      rotorOffset: shiftNumber("A", scrambler[CENTER_ROTOR][EXPOSED_LETTER])
+      rotorOffset: distanceBetweenLetters(
+        "A",
+        scrambler[CENTER_ROTOR][EXPOSED_LETTER]
+      )
     },
     {
       wheel: ROTORS[scrambler[SLOW_ROTOR][MODEL]],
-      rotorOffset: shiftNumber("A", scrambler[SLOW_ROTOR][EXPOSED_LETTER])
+      rotorOffset: distanceBetweenLetters(
+        "A",
+        scrambler[SLOW_ROTOR][EXPOSED_LETTER]
+      )
     },
     {
       wheel: GREEK_WHEELS[scrambler[GREEK_WHEEL][MODEL]],
-      rotorOffset: shiftNumber("A", scrambler[GREEK_WHEEL][EXPOSED_LETTER])
+      rotorOffset: distanceBetweenLetters(
+        "A",
+        scrambler[GREEK_WHEEL][EXPOSED_LETTER]
+      )
     }
   ];
 
@@ -87,17 +113,17 @@ export default function enigma(
       function (previousValue, currentValue) {
         // after hitting the reflector, enigma works the same way, but the wiring connections are reversed from this perspective,
         // so we use the inverse mapping of the rotor/wheel
-        const connectionElement = shiftLetter(
+        const connectionElement = getLetterPlusShift(
           previousValue,
           currentValue.rotorOffset
         );
-        const totalShift = shiftNumber(
+        const totalShift = distanceBetweenLetters(
           connectionElement,
           currentValue.wheel.inverse.get(connectionElement)
         );
-        return shiftLetter(previousValue, totalShift);
+        return getLetterPlusShift(previousValue, totalShift);
       },
-      REFLECTORS[scrambler[REFLECTOR]].get(
+      getReflectorLetter(
         arr.reduce(function (accumulator, currentValue) {
           // accumulator is a LETTER, not a number
           // currentValue is an element in arr
@@ -106,25 +132,27 @@ export default function enigma(
           // whose elements are in alphabetical order with 'A' as the 'exposedLetter'
 
           // find which letter is actually in currentValue's 'accumulator' position
-          const connectionElement = shiftLetter(
+          const connectionElement = getLetterPlusShift(
             accumulator,
             currentValue.rotorOffset
           );
 
           // find the shift associated with that letter
-          const totalShift = shiftNumber(
+          const totalShift = distanceBetweenLetters(
             connectionElement,
             currentValue.wheel.get(connectionElement)
           );
 
           // return the letter having undergone that shift
-          return shiftLetter(accumulator, totalShift);
+          return getLetterPlusShift(accumulator, totalShift);
         }, letter)
       )
     );
   }
 
-  return flow([getPlugboardLetter, rotorScramble, getPlugboardLetter])(
-    plainletter
-  );
+  return compose(
+    getPlugboardLetter,
+    rotorScramble,
+    getPlugboardLetter
+  )(plainletter);
 }
