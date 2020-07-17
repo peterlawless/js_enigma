@@ -3,7 +3,7 @@ import BiMap from "mnemonist/bi-map";
 import {
   compose,
   getLetterPlusShift,
-  distanceBetweenLetters,
+  getDistanceBetweenLetters,
   isSingleLetter,
   getLetterMappingFrom
 } from "./utils";
@@ -80,28 +80,28 @@ export default function enigma(
   var arr = [
     {
       wheel: ROTORS[scrambler[FAST_ROTOR][MODEL]],
-      rotorOffset: distanceBetweenLetters(
+      rotorOffset: getDistanceBetweenLetters(
         "A",
         scrambler[FAST_ROTOR][EXPOSED_LETTER]
       )
     },
     {
       wheel: ROTORS[scrambler[CENTER_ROTOR][MODEL]],
-      rotorOffset: distanceBetweenLetters(
+      rotorOffset: getDistanceBetweenLetters(
         "A",
         scrambler[CENTER_ROTOR][EXPOSED_LETTER]
       )
     },
     {
       wheel: ROTORS[scrambler[SLOW_ROTOR][MODEL]],
-      rotorOffset: distanceBetweenLetters(
+      rotorOffset: getDistanceBetweenLetters(
         "A",
         scrambler[SLOW_ROTOR][EXPOSED_LETTER]
       )
     },
     {
       wheel: GREEK_WHEELS[scrambler[GREEK_WHEEL][MODEL]],
-      rotorOffset: distanceBetweenLetters(
+      rotorOffset: getDistanceBetweenLetters(
         "A",
         scrambler[GREEK_WHEEL][EXPOSED_LETTER]
       )
@@ -117,7 +117,7 @@ export default function enigma(
           previousValue,
           currentValue.rotorOffset
         );
-        const totalShift = distanceBetweenLetters(
+        const totalShift = getDistanceBetweenLetters(
           connectionElement,
           currentValue.wheel.inverse.get(connectionElement)
         );
@@ -138,7 +138,7 @@ export default function enigma(
           );
 
           // find the shift associated with that letter
-          const totalShift = distanceBetweenLetters(
+          const totalShift = getDistanceBetweenLetters(
             connectionElement,
             currentValue.wheel.get(connectionElement)
           );

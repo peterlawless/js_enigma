@@ -1,7 +1,7 @@
 import BiMap from "mnemonist/bi-map";
 import {
   compose,
-  distanceBetweenLetters,
+  getDistanceBetweenLetters,
   getLetterPlusShift,
   isSingleLetter,
   getLetterMappingFrom,
@@ -13,11 +13,11 @@ import { MODEL, EXPOSED_LETTER } from "../enigma/constants";
 
 describe("distaceBetweenLetters", function () {
   it("given inputs 'A' and 'B', should return 1", function () {
-    expect(distanceBetweenLetters("A", "B")).toBe(1);
+    expect(getDistanceBetweenLetters("A", "B")).toBe(1);
   });
 
   it("given inputs 'A' and 'Z', should return 25", function () {
-    expect(distanceBetweenLetters("A", "Z")).toBe(25);
+    expect(getDistanceBetweenLetters("A", "Z")).toBe(25);
   });
 });
 

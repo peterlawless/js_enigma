@@ -5,7 +5,7 @@ import {
   REFLECTORS
 } from "./constants";
 
-export const distanceBetweenLetters = (letter1, letter2) =>
+export const getDistanceBetweenLetters = (letter1, letter2) =>
   (ALPHABET_BI_MAP.get(letter2) - ALPHABET_BI_MAP.get(letter1) + 26) % 26;
 
 export const getLetterPlusShift = (letter, number) =>
@@ -13,13 +13,13 @@ export const getLetterPlusShift = (letter, number) =>
 
 export const compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
 
-export const makeRotorScrambler = ringPosition => rotor => letter => {
+export const makeRotorScrambler = rotor => ringPosition => letter => {
   // how many elements is the ring displaced from the 'A' position?
-  const ringOffset = distanceBetweenLetters("A", ringPosition);
+  const ringOffset = getDistanceBetweenLetters("A", ringPosition);
   // what ring element (i.e., letter) is our input letter connecting to?
   const ringElementToPerformShift = getLetterPlusShift(letter, ringOffset);
   // how how many elements does that ring element shift our input letter?
-  const ringElementShift = distanceBetweenLetters(
+  const ringElementShift = getDistanceBetweenLetters(
     ringElementToPerformShift,
     rotor.get(ringElementToPerformShift)
   );
@@ -32,14 +32,12 @@ export const makeM4Reflector = (
   thinReflector = REFLECTORS.b,
   greekWheel = GREEK_WHEELS.beta,
   ringPosition = "A"
-) => letter => {
-  const greekWheelScrambler = makeRotorScrambler(ringPosition);
-  return compose(
-    greekWheelScrambler(greekWheel.inverse),
+) =>
+  compose(
+    makeRotorScrambler(greekWheel.inverse)(ringPosition),
     getLetterMappingFrom(thinReflector),
-    greekWheelScrambler(greekWheel)
-  )(letter);
-};
+    makeRotorScrambler(greekWheel)(ringPosition)
+  );
 
 export function shiftLetter(letter, number) {
   return getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + number);
