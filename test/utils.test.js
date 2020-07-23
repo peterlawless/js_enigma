@@ -9,9 +9,10 @@ import {
   getLetterMappingFrom,
   alphabetLoopIncrement,
   alphabetLoopDecrement,
-  isOnTurnoverLetter
+  isOnTurnoverLetter,
+  makeRotorScrambler
 } from "../enigma/utils";
-import { MODEL, EXPOSED_LETTER } from "../enigma/constants";
+import { MODEL, EXPOSED_LETTER, ROTORS } from "../enigma/constants";
 
 describe("distaceBetweenLetters", function () {
   it("given inputs 'A' and 'B', should return 1", function () {
@@ -51,7 +52,7 @@ describe("getRingElementWithRespectToRingPosition", () => {
   });
 });
 
-describe("getRingElementShift", () => {
+describe("getRingElementShiftForRotor", () => {
   const mockRotor = BiMap.from({ A: "Z" });
   const getRingElementShift = getRingElementShiftForRotor(mockRotor);
   it("returns the shift (number) associated with a particular ring element (letter)", () => {
@@ -125,5 +126,17 @@ describe("isOnTurnoverLetter", function () {
     expect(isOnTurnoverLetter({ [MODEL]: "I", [EXPOSED_LETTER]: "Q" })).toBe(
       true
     );
+  });
+});
+
+describe("makeRotorScrambler", () => {
+  const rotor = ROTORS.I;
+  const rotorScramble = makeRotorScrambler("B");
+  it("should return the correct letter mapping forwards", () => {
+    expect(rotorScramble(rotor)("C")).toBe("E");
+  });
+
+  it("should return the correct letter mapping backwards", () => {
+    expect(rotorScramble(rotor.inverse)("C")).toBe("F");
   });
 });

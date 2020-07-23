@@ -20,8 +20,14 @@ export const getRingElementShiftForRotor = rotor => ringElementToPerformShift =>
     rotor.get(ringElementToPerformShift)
   );
 
-export const getLetterPlusShift = (letter, number) =>
-  getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + number);
+/**
+ *
+ * @param {string} letter single uppercase letter
+ * @param {number} shift positive integer
+ * @returns {string} letter found 'shift' elements away from the input letter
+ */
+export const getLetterPlusShift = (letter, shift) =>
+  getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + shift);
 
 /**
  * @function getRingElementWithRespectToRingPosition
@@ -36,9 +42,10 @@ export const getRingElementWithRespectToRingPosition = ringPosition => letter =>
   return getLetterPlusShift(letter, ringOffset);
 };
 
+// Thanks, Eric Elliot!
 export const compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
 
-export const makeRotorScrambler = rotor => ringPosition => letter => {
+export const makeRotorScrambler = ringPosition => rotor => letter => {
   // how many elements is the ring displaced from the 'A' position?
   const ringOffset = getDistanceBetweenLetters("A", ringPosition);
   // what ring element (i.e., letter) is our input letter connecting to?
@@ -59,9 +66,9 @@ export const makeM4Reflector = (
   ringPosition = "A"
 ) =>
   compose(
-    makeRotorScrambler(greekWheel.inverse)(ringPosition),
+    makeRotorScrambler(ringPosition)(greekWheel.inverse),
     getLetterMappingFrom(thinReflector),
-    makeRotorScrambler(greekWheel)(ringPosition)
+    makeRotorScrambler(ringPosition)(greekWheel)
   );
 
 export function shiftLetter(letter, number) {
