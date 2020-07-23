@@ -10,9 +10,16 @@ import {
   alphabetLoopIncrement,
   alphabetLoopDecrement,
   isOnTurnoverLetter,
-  makeRotorScrambler
+  makeRotorScrambler,
+  makeM4Reflector
 } from "../enigma/utils";
-import { MODEL, EXPOSED_LETTER, ROTORS } from "../enigma/constants";
+import {
+  MODEL,
+  EXPOSED_LETTER,
+  ROTORS,
+  REFLECTORS,
+  GREEK_WHEELS
+} from "../enigma/constants";
 
 describe("distaceBetweenLetters", function () {
   it("given inputs 'A' and 'B', should return 1", function () {
@@ -138,5 +145,19 @@ describe("makeRotorScrambler", () => {
 
   it("should return the correct letter mapping backwards", () => {
     expect(rotorScramble(rotor.inverse)("C")).toBe("F");
+  });
+});
+
+describe("makeM4Reflector", () => {
+  it("should return correct letter mapping given default settings", () => {
+    const reflector = makeM4Reflector();
+    expect(reflector("A")).toBe("Y");
+    expect(reflector("B")).toBe("R");
+  });
+
+  it("should return correct letter mapping for provided settings", () => {
+    const reflector = makeM4Reflector(REFLECTORS.c, GREEK_WHEELS.gamma, "A");
+    expect(reflector("A")).toBe("F");
+    expect(reflector("B")).toBe("V");
   });
 });
