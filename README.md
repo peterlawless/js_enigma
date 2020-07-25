@@ -1,8 +1,9 @@
 # js_enigma
-Proof of concept project for a static site with the functionality of the M4 Enigma
 
-This repository is home for a javascript implementation of the Enigma Code M4, as well as relevant unit and functional tests.
+This repository is home to a JavaScript implementation of the infamous Enigma Code Machine that saw use by all branches of the Wehrmacht during World War 2.
 
-Special thanks to [cryptomuseum.com](http://cryptomuseum.com/index.htm) for their excellent documentation of the [Enigma M4](http://cryptomuseum.com/crypto/enigma/m4/), especially for providing the wiring of its many rotors and reflectors.
+TODO: code samples
 
-**Important note:** the `enigma` function only takes in a single, uppercase letter (plaintext), and an object describing the configuration of the code machine, and returns a single uppercase letter (ciphertext) *without* mutating the configuration (i.e., it does not rotate the rotors).  The state of the code machine's configuration ought to be delegated to a state container such as [redux](https://redux.js.org/).
+Special thanks to [cryptomuseum.com](http://cryptomuseum.com/index.htm) for their excellent documentation of the [Enigma M4](http://cryptomuseum.com/crypto/enigma/m4/) and other Enigma variants, especially for providing the wiring of its many rotors and reflectors.
+
+Disclaimer: this project is just for funsies and the Enigma is not a secure means of encryption. The Germans lost the war for a variety of reasons, including that the Allies were "reading their mail" almost the entire time. So please don't use this library to encrypt anything important.
