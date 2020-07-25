@@ -29,6 +29,9 @@ export const ALPHABET_BI_MAP = BiMap.from({
   Z: 25
 });
 
+/**
+ * @enum {BiMap}
+ */
 export const ROTORS = {
   I: BiMap.from({
     A: "E",

@@ -3,7 +3,7 @@ import {
   ROTOR_TURNOVER_LETTERS,
   GREEK_WHEELS,
   REFLECTORS
-} from "./constants";
+} from "../constants";
 
 export const getDistanceBetweenLetters = (letter1, letter2) =>
   (ALPHABET_BI_MAP.get(letter2) - ALPHABET_BI_MAP.get(letter1) + 26) % 26;
@@ -45,19 +45,21 @@ export const getRingElementWithRespectToRingPosition = ringPosition => letter =>
 // Thanks, Eric Elliot!
 export const compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
 
-export const makeRotorScrambler = ringPosition => rotor => letter => {
+export const rotorEncrypt = (ringPosition, rotor) => {
   // how many elements is the ring displaced from the 'A' position?
   const ringOffset = getDistanceBetweenLetters("A", ringPosition);
-  // what ring element (i.e., letter) is our input letter connecting to?
-  const ringElementToPerformShift = getLetterPlusShift(letter, ringOffset);
-  // how how many elements does that ring element shift our input letter?
-  const ringElementShift = getDistanceBetweenLetters(
-    ringElementToPerformShift,
-    rotor.get(ringElementToPerformShift)
-  );
-  // what is the resulting letter after that shift?
-  const cipherLetter = getLetterPlusShift(letter, ringElementShift);
-  return cipherLetter;
+  return letter => {
+    // what ring element (i.e., letter) is our input letter connecting to?
+    const ringElementToPerformShift = getLetterPlusShift(letter, ringOffset);
+    // how how many elements does that ring element shift our input letter?
+    const ringElementShift = getDistanceBetweenLetters(
+      ringElementToPerformShift,
+      rotor.get(ringElementToPerformShift)
+    );
+    // what is the resulting letter after that shift?
+    const cipherLetter = getLetterPlusShift(letter, ringElementShift);
+    return cipherLetter;
+  };
 };
 
 export const makeM4Reflector = (
@@ -66,9 +68,9 @@ export const makeM4Reflector = (
   ringPosition = "A"
 ) =>
   compose(
-    makeRotorScrambler(ringPosition)(greekWheel.inverse),
+    rotorEncrypt(ringPosition, greekWheel.inverse),
     getLetterMappingFrom(thinReflector),
-    makeRotorScrambler(ringPosition)(greekWheel)
+    rotorEncrypt(ringPosition, greekWheel)
   );
 
 export function shiftLetter(letter, number) {

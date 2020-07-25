@@ -1,9 +1,4 @@
-import {
-  ALPHABET_BI_MAP,
-  ROTORS,
-  GREEK_WHEELS,
-  REFLECTORS
-} from "../enigma/constants";
+import { ALPHABET_BI_MAP, ROTORS, GREEK_WHEELS, REFLECTORS } from "./constants";
 
 describe("constants", () => {
   const alphabetArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
