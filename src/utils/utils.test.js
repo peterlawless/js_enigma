@@ -146,17 +146,3 @@ describe("rotorEncrypt", () => {
     expect(rotorEncrypt("B", rotor.inverse)("C")).toBe("F");
   });
 });
-
-describe("makeM4Reflector", () => {
-  it("should return correct letter mapping given default settings", () => {
-    const reflector = makeM4Reflector();
-    expect(reflector("A")).toBe("Y");
-    expect(reflector("B")).toBe("R");
-  });
-
-  it("should return correct letter mapping for provided settings", () => {
-    const reflector = makeM4Reflector(REFLECTORS.c, GREEK_WHEELS.gamma, "A");
-    expect(reflector("A")).toBe("F");
-    expect(reflector("B")).toBe("V");
-  });
-});

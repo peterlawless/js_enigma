@@ -1,5 +1,6 @@
 import { REFLECTORS, GREEK_WHEELS, ROTORS } from "../../constants";
-import { makeRotorScrambler, makeM4Reflector } from "../../utils";
+import makeRotorScrambler from "../make-rotor-scrambler";
+import makeM4Reflector from "../make-m4-reflector";
 import makeEnigma from "./make-enigma";
 
 describe("makeEnigma", function () {

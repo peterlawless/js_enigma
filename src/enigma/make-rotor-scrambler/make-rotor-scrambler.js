@@ -1,4 +1,4 @@
-import { rotorEncrypt } from "../utils";
+import { rotorEncrypt } from "../../utils";
 
 /**
  *

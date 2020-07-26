@@ -1,9 +1,4 @@
-import {
-  ALPHABET_BI_MAP,
-  ROTOR_TURNOVER_LETTERS,
-  GREEK_WHEELS,
-  REFLECTORS
-} from "../constants";
+import { ALPHABET_BI_MAP, ROTOR_TURNOVER_LETTERS } from "../constants";
 
 export const getDistanceBetweenLetters = (letter1, letter2) =>
   (ALPHABET_BI_MAP.get(letter2) - ALPHABET_BI_MAP.get(letter1) + 26) % 26;
@@ -61,17 +56,6 @@ export const rotorEncrypt = (ringPosition, rotor) => {
     return cipherLetter;
   };
 };
-
-export const makeM4Reflector = (
-  thinReflector = REFLECTORS.b,
-  greekWheel = GREEK_WHEELS.beta,
-  ringPosition = "A"
-) =>
-  compose(
-    rotorEncrypt(ringPosition, greekWheel.inverse),
-    getLetterMappingFrom(thinReflector),
-    rotorEncrypt(ringPosition, greekWheel)
-  );
 
 export function shiftLetter(letter, number) {
   return getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + number);
