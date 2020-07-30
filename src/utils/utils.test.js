@@ -10,16 +10,9 @@ import {
   alphabetLoopIncrement,
   alphabetLoopDecrement,
   isOnTurnoverLetter,
-  rotorEncrypt,
-  makeM4Reflector
+  rotorEncrypt
 } from "./utils";
-import {
-  MODEL,
-  EXPOSED_LETTER,
-  ROTORS,
-  REFLECTORS,
-  GREEK_WHEELS
-} from "../constants";
+import { MODEL, EXPOSED_LETTER, ROTORS } from "../constants";
 
 describe("distaceBetweenLetters", function () {
   it("given inputs 'A' and 'B', should return 1", function () {
