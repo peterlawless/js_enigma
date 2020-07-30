@@ -35,7 +35,7 @@ describe("makeEnigma", function () {
       }
     ]);
 
-    const enigma = makeEnigma(rotorScrambler, reflector);
+    const enigma = makeEnigma(reflector)(rotorScrambler);
 
     const plainLetter = randomPick(alphabetArray);
 

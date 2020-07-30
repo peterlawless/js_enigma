@@ -3,10 +3,9 @@ import makeM4Reflector from "../make-m4-reflector";
 
 // TODO: rotor/plugboard/reflector getters and builders with input validation
 const makeEnigma = (
-  rotorScrambler,
   reflector = makeM4Reflector(),
   plugBoard = letter => letter
-) =>
+) => rotorScrambler =>
   compose(
     plugBoard,
     rotorScrambler.backward,
