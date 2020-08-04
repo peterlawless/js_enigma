@@ -62,7 +62,7 @@ export function shiftLetter(letter, number) {
 }
 
 export function isSingleLetter(letter) {
-  return /^[A-Z]{1}$/.test(letter);
+  return ALPHABET_BI_MAP.has(letter);
 }
 
 export const getLetterMappingFrom = biMap => letter =>
