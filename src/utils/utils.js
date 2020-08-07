@@ -1,4 +1,4 @@
-import { ALPHABET_BI_MAP, ROTOR_TURNOVER_LETTERS } from "../constants";
+import { ALPHABET_BI_MAP } from "../constants";
 
 export const getDistanceBetweenLetters = (letter1, letter2) =>
   (ALPHABET_BI_MAP.get(letter2) - ALPHABET_BI_MAP.get(letter1) + 26) % 26;
@@ -40,7 +40,7 @@ export const getRingElementWithRespectToRingPosition = ringPosition => letter =>
 // Thanks, Eric Elliot!
 export const compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
 
-export const rotorEncrypt = (ringPosition, rotor) => {
+export const rotorEncrypt = (ringPosition, rotorWiring) => {
   // how many elements is the ring displaced from the 'A' position?
   const ringOffset = getDistanceBetweenLetters("A", ringPosition);
   return letter => {
@@ -49,7 +49,7 @@ export const rotorEncrypt = (ringPosition, rotor) => {
     // how how many elements does that ring element shift our input letter?
     const ringElementShift = getDistanceBetweenLetters(
       ringElementToPerformShift,
-      rotor.get(ringElementToPerformShift)
+      rotorWiring.get(ringElementToPerformShift)
     );
     // what is the resulting letter after that shift?
     const cipherLetter = getLetterPlusShift(letter, ringElementShift);
@@ -78,8 +78,4 @@ export function alphabetLoopDecrement(letter) {
 
 function getLetterFromNumber(number) {
   return ALPHABET_BI_MAP.inverse.get((number + 26) % 26);
-}
-
-export function isOnTurnoverLetter(rotor) {
-  return !!ROTOR_TURNOVER_LETTERS[rotor.model][rotor.exposedLetter];
 }

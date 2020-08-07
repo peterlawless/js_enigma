@@ -115,27 +115,13 @@ describe("alphabetLoopDecrement", function () {
   });
 });
 
-describe("isOnTurnoverLetter", function () {
-  it("should return false for letters that are NOT turnover points for the given rotor", function () {
-    expect(isOnTurnoverLetter({ [MODEL]: "I", [EXPOSED_LETTER]: "A" })).toBe(
-      false
-    );
-  });
-
-  it("should return true for letters that are turnover points for the given rotor", function () {
-    expect(isOnTurnoverLetter({ [MODEL]: "I", [EXPOSED_LETTER]: "Q" })).toBe(
-      true
-    );
-  });
-});
-
 describe("rotorEncrypt", () => {
-  const rotor = ROTORS.I;
+  const { wiring } = ROTORS.I;
   it("should return the correct letter mapping forwards", () => {
-    expect(rotorEncrypt("B", rotor)("C")).toBe("E");
+    expect(rotorEncrypt("B", wiring)("C")).toBe("E");
   });
 
   it("should return the correct letter mapping backwards", () => {
-    expect(rotorEncrypt("B", rotor.inverse)("C")).toBe("F");
+    expect(rotorEncrypt("B", wiring.inverse)("C")).toBe("F");
   });
 });

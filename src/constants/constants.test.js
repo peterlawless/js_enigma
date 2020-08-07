@@ -22,26 +22,25 @@ describe("constants", () => {
   });
 
   describe("ROTORS", function () {
-    for (var romanNumeral in ROTORS) {
-      var rotor = ROTORS[romanNumeral];
-      describe(`Rotor ${romanNumeral}`, function () {
+    describe.each(Object.entries(ROTORS))("%s", (_, { wiring }) => {
+      describe("wiring", () => {
         it("should have 26 entries", function () {
-          expect(rotor.size).toBe(26);
+          expect(wiring.size).toBe(26);
         });
 
         it("should have an entry on the 'forward' side for every letter of the alphabet", function () {
-          alphabetArray.map(function (letter) {
-            expect(rotor.get(letter)).toBeDefined();
+          alphabetArray.map(letter => {
+            expect(wiring.get(letter)).toBeDefined();
           });
         });
 
         it("should have an entry on the 'reverse' side for every letter of the alphabet", function () {
-          alphabetArray.map(function (letter) {
-            expect(rotor.inverse.get(letter)).toBeDefined();
+          alphabetArray.map(letter => {
+            expect(wiring.inverse.get(letter)).toBeDefined();
           });
         });
       });
-    }
+    });
   });
 
   describe("Greek Wheels", function () {
