@@ -22,25 +22,40 @@ describe("constants", () => {
   });
 
   describe("ROTORS", function () {
-    describe.each(Object.entries(ROTORS))("%s", (_, { wiring }) => {
-      describe("wiring", () => {
-        it("should have 26 entries", function () {
-          expect(wiring.size).toBe(26);
-        });
+    describe.each(Object.entries(ROTORS))(
+      "%s",
+      (_, { wiring, turnoverLetters }) => {
+        describe("wiring", () => {
+          it("should have 26 entries", function () {
+            expect(wiring.size).toBe(26);
+          });
 
-        it("should have an entry on the 'forward' side for every letter of the alphabet", function () {
-          alphabetArray.map(letter => {
-            expect(wiring.get(letter)).toBeDefined();
+          it("should have an entry on the 'forward' side for every letter of the alphabet", function () {
+            alphabetArray.map(letter => {
+              expect(wiring.get(letter)).toBeDefined();
+            });
+          });
+
+          it("should have an entry on the 'reverse' side for every letter of the alphabet", function () {
+            alphabetArray.map(letter => {
+              expect(wiring.inverse.get(letter)).toBeDefined();
+            });
           });
         });
 
-        it("should have an entry on the 'reverse' side for every letter of the alphabet", function () {
-          alphabetArray.map(letter => {
-            expect(wiring.inverse.get(letter)).toBeDefined();
+        describe("turnoverLetters", () => {
+          it("should contain an object mapping single letters to 'true' Boolean values", () => {
+            console.log(Object.entries(turnoverLetters));
+            expect(
+              Object.entries(turnoverLetters).every(
+                ([letter, value]) =>
+                  alphabetArray.includes(letter) && value === true
+              )
+            ).toBe(true);
           });
         });
-      });
-    });
+      }
+    );
   });
 
   describe("Greek Wheels", function () {
