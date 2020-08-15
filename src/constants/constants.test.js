@@ -45,7 +45,6 @@ describe("constants", () => {
 
         describe("turnoverLetters", () => {
           it("should contain an object mapping single letters to 'true' Boolean values", () => {
-            console.log(Object.entries(turnoverLetters));
             expect(
               Object.entries(turnoverLetters).every(
                 ([letter, value]) =>
