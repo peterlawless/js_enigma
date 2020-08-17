@@ -23,15 +23,15 @@ describe("makeEnigma", function () {
     const rotorScrambler = makeRotorScrambler([
       {
         rotor: ROTORS[randomPick(rotorKeys)],
-        ringPosition: randomPick(alphabetArray)
+        rotorPosition: randomPick(alphabetArray)
       },
       {
         rotor: ROTORS[randomPick(rotorKeys)],
-        ringPosition: randomPick(alphabetArray)
+        rotorPosition: randomPick(alphabetArray)
       },
       {
         rotor: ROTORS[randomPick(rotorKeys)],
-        ringPosition: randomPick(alphabetArray)
+        rotorPosition: randomPick(alphabetArray)
       }
     ]);
 

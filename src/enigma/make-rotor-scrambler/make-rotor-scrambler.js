@@ -2,9 +2,9 @@ import { rotorEncrypt } from "../../utils";
 
 /**
  *
- * @typedef {Object} ringStellung
+ * @typedef {Object} rotorSetting
  * @property {Object} rotor
- * @property {string} ringPosition
+ * @property {string} rotorPosition
  */
 
 /**
@@ -20,14 +20,14 @@ import { rotorEncrypt } from "../../utils";
 
 /**
  *
- * @param {Array.<ringStellung>} settings ring settings including the rotor bimap and the ringStellung in an array read from left to right
+ * @param {Array.<rotorSetting>} settings ring settings including the rotor bimap and the ringStellung in an array read from left to right
  * @returns {rotorScrambler}
  */
 const makeRotorScrambler = settings => {
   const forward = letter =>
     settings
-      .map(({ ringPosition, rotor: { wiring } }) =>
-        rotorEncrypt(ringPosition, wiring)
+      .map(({ rotorPosition, rotor: { wiring } }) =>
+        rotorEncrypt(rotorPosition, wiring)
       )
       .reduceRight(
         (cipherLetter, rotorScramble) => rotorScramble(cipherLetter),
@@ -36,8 +36,8 @@ const makeRotorScrambler = settings => {
 
   const backward = letter =>
     settings
-      .map(({ ringPosition, rotor: { wiring } }) =>
-        rotorEncrypt(ringPosition, wiring.inverse)
+      .map(({ rotorPosition, rotor: { wiring } }) =>
+        rotorEncrypt(rotorPosition, wiring.inverse)
       )
       .reduce(
         (cipherLetter, rotorScramble) => rotorScramble(cipherLetter),

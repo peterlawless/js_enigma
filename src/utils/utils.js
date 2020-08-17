@@ -25,14 +25,14 @@ export const getLetterPlusShift = (letter, shift) =>
   getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + shift);
 
 /**
- * @function getRingElementWithRespectToRingPosition
- * @param {string} ringPosition the letter a rotor is set to (Ringstellung)
+ * @function getRingElementWithRespectToRotorPosition
+ * @param {string} rotorPosition the letter a rotor is set to
  * @returns {(letter: string) => string}
  * @description Given a rotor setting, returns a function that determines which ring element a plaintext letter connects to
  */
-export const getRingElementWithRespectToRingPosition = ringPosition => letter => {
+export const getRingElementWithRespectToRotorPosition = rotorPosition => letter => {
   // how many elements is the ring displaced from the 'A' position?
-  const ringOffset = getDistanceBetweenLetters("A", ringPosition);
+  const ringOffset = getDistanceBetweenLetters("A", rotorPosition);
   // what ring element (i.e., letter) is our input letter connecting to?
   return getLetterPlusShift(letter, ringOffset);
 };
@@ -40,9 +40,9 @@ export const getRingElementWithRespectToRingPosition = ringPosition => letter =>
 // Thanks, Eric Elliot!
 export const compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
 
-export const rotorEncrypt = (ringPosition, rotorWiring) => {
+export const rotorEncrypt = (rotorPosition, rotorWiring) => {
   // how many elements is the ring displaced from the 'A' position?
-  const ringOffset = getDistanceBetweenLetters("A", ringPosition);
+  const ringOffset = getDistanceBetweenLetters("A", rotorPosition);
   return letter => {
     // what ring element (i.e., letter) is our input letter connecting to?
     const ringElementToPerformShift = getLetterPlusShift(letter, ringOffset);

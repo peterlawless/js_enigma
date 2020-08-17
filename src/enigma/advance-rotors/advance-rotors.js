@@ -1,24 +1,24 @@
 import { alphabetLoopIncrement } from "../../utils";
 
 const advanceRotors = settings => {
-  let rotor, ringPosition;
+  let rotor, rotorPosition;
   let newSettings = [];
-  let newRingStellung;
+  let rotorSetting;
   let shouldRotorAdvance = true;
   for (let i = settings.length - 1; i >= 0; i--) {
-    ({ rotor, ringPosition } = settings[i]);
+    ({ rotor, rotorPosition } = settings[i]);
     if (shouldRotorAdvance) {
-      newRingStellung = {
+      rotorSetting = {
         rotor,
-        ringPosition: alphabetLoopIncrement(ringPosition)
+        rotorPosition: alphabetLoopIncrement(rotorPosition)
       };
       // we re-evaluate shouldRotorAdvance ONLY if it is true
       // i.e., once it becomes false, it cannot become true again
-      shouldRotorAdvance = Boolean(rotor.turnoverLetters[ringPosition]);
+      shouldRotorAdvance = Boolean(rotor.turnoverLetters[rotorPosition]);
     } else {
-      newRingStellung = { rotor, ringPosition };
+      rotorSetting = { rotor, rotorPosition };
     }
-    newSettings.unshift(newRingStellung);
+    newSettings.unshift(rotorSetting);
   }
   return newSettings;
 };

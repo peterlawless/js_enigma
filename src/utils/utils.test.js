@@ -3,16 +3,15 @@ import {
   compose,
   getDistanceBetweenLetters,
   getLetterPlusShift,
-  getRingElementWithRespectToRingPosition,
+  getRingElementWithRespectToRotorPosition,
   getRingElementShiftForRotor,
   isSingleLetter,
   getLetterMappingFrom,
   alphabetLoopIncrement,
   alphabetLoopDecrement,
-  isOnTurnoverLetter,
   rotorEncrypt
 } from "./utils";
-import { MODEL, EXPOSED_LETTER, ROTORS } from "../constants";
+import { ROTORS } from "../constants";
 
 describe("distaceBetweenLetters", function () {
   it("given inputs 'A' and 'B', should return 1", function () {
@@ -42,8 +41,8 @@ describe("compose", () => {
   expect(c).toHaveBeenCalledWith("ab");
 });
 
-describe("getRingElementWithRespectToRingPosition", () => {
-  const getRingElementToPerformShift = getRingElementWithRespectToRingPosition(
+describe("getRingElementWithRespectToRotorPosition", () => {
+  const getRingElementToPerformShift = getRingElementWithRespectToRotorPosition(
     "C"
   );
   it("should return the letter for the rotor element that the plaintext letter connects to", () => {

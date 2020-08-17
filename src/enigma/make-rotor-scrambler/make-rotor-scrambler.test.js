@@ -3,9 +3,9 @@ import { ROTORS } from "../../constants";
 
 describe("makeRotorScrambler", () => {
   const rotorScrambler = makeRotorScrambler([
-    { ringPosition: "A", rotor: ROTORS.I },
-    { ringPosition: "A", rotor: ROTORS.II },
-    { ringPosition: "A", rotor: ROTORS.III }
+    { rotorPosition: "A", rotor: ROTORS.I },
+    { rotorPosition: "A", rotor: ROTORS.II },
+    { rotorPosition: "A", rotor: ROTORS.III }
   ]);
 
   it("should return an object containing a 'forward' function and a 'backward' function", () => {
