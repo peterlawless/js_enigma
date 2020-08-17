@@ -41,24 +41,6 @@ describe("compose", () => {
   expect(c).toHaveBeenCalledWith("ab");
 });
 
-describe("getRingElementWithRespectToRotorPosition", () => {
-  const getRingElementToPerformShift = getRingElementWithRespectToRotorPosition(
-    "C"
-  );
-  it("should return the letter for the rotor element that the plaintext letter connects to", () => {
-    expect(getRingElementToPerformShift("A")).toBe("C");
-    expect(getRingElementToPerformShift("Z")).toBe("B");
-  });
-});
-
-describe("getRingElementShiftForRotor", () => {
-  const mockRotor = BiMap.from({ A: "Z" });
-  const getRingElementShift = getRingElementShiftForRotor(mockRotor);
-  it("returns the shift (number) associated with a particular ring element (letter)", () => {
-    expect(getRingElementShift("A")).toBe(25);
-  });
-});
-
 describe("isSingleLetter", function () {
   it("should return false when given an empty string", function () {
     expect(isSingleLetter("")).toBe(false);

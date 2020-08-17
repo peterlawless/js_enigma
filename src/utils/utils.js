@@ -4,18 +4,6 @@ export const getDistanceBetweenLetters = (letter1, letter2) =>
   (ALPHABET_BI_MAP.get(letter2) - ALPHABET_BI_MAP.get(letter1) + 26) % 26;
 
 /**
- * @function getRingElementShiftForRotor
- * @param {BiMap} rotor
- * @returns {(ringElementToPerformShift: string) => number}
- * @description Given a rotor, returns the shift (number) associated with a particular ring element (letter)
- */
-export const getRingElementShiftForRotor = rotor => ringElementToPerformShift =>
-  getDistanceBetweenLetters(
-    ringElementToPerformShift,
-    rotor.get(ringElementToPerformShift)
-  );
-
-/**
  *
  * @param {string} letter single uppercase letter
  * @param {number} shift positive integer
@@ -23,19 +11,6 @@ export const getRingElementShiftForRotor = rotor => ringElementToPerformShift =>
  */
 export const getLetterPlusShift = (letter, shift) =>
   getLetterFromNumber(ALPHABET_BI_MAP.get(letter) + shift);
-
-/**
- * @function getRingElementWithRespectToRotorPosition
- * @param {string} rotorPosition the letter a rotor is set to
- * @returns {(letter: string) => string}
- * @description Given a rotor setting, returns a function that determines which ring element a plaintext letter connects to
- */
-export const getRingElementWithRespectToRotorPosition = rotorPosition => letter => {
-  // how many elements is the ring displaced from the 'A' position?
-  const ringOffset = getDistanceBetweenLetters("A", rotorPosition);
-  // what ring element (i.e., letter) is our input letter connecting to?
-  return getLetterPlusShift(letter, ringOffset);
-};
 
 // Thanks, Eric Elliot!
 export const compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
