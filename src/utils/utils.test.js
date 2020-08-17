@@ -3,8 +3,6 @@ import {
   compose,
   getDistanceBetweenLetters,
   getLetterPlusShift,
-  getRingElementWithRespectToRotorPosition,
-  getRingElementShiftForRotor,
   isSingleLetter,
   getLetterMappingFrom,
   alphabetLoopIncrement,
