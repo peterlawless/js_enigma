@@ -5,6 +5,7 @@ import { rotorEncrypt } from "../../utils";
  * @typedef {Object} rotorSetting
  * @property {Object} rotor
  * @property {string} rotorPosition
+ * @property {string} ringPosition
  */
 
 /**
@@ -27,7 +28,7 @@ const makeRotorScrambler = settings => {
   const forward = letter =>
     settings
       .map(({ rotorPosition, rotor: { wiring } }) =>
-        rotorEncrypt(rotorPosition, wiring)
+        rotorEncrypt(wiring, rotorPosition)
       )
       .reduceRight(
         (cipherLetter, rotorScramble) => rotorScramble(cipherLetter),
@@ -37,7 +38,7 @@ const makeRotorScrambler = settings => {
   const backward = letter =>
     settings
       .map(({ rotorPosition, rotor: { wiring } }) =>
-        rotorEncrypt(rotorPosition, wiring.inverse)
+        rotorEncrypt(wiring.inverse, rotorPosition)
       )
       .reduce(
         (cipherLetter, rotorScramble) => rotorScramble(cipherLetter),

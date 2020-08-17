@@ -116,11 +116,24 @@ describe("alphabetLoopDecrement", function () {
 
 describe("rotorEncrypt", () => {
   const { wiring } = ROTORS.I;
-  it("should return the correct letter mapping forwards", () => {
-    expect(rotorEncrypt("B", wiring)("C")).toBe("E");
+
+  describe("when the ringPosition (ringStellung) utilizes its default value of 'A'", () => {
+    it("should return the correct letter mapping forwards", () => {
+      expect(rotorEncrypt(wiring, "B")("C")).toBe("E");
+    });
+
+    it("should return the correct letter mapping backwards", () => {
+      expect(rotorEncrypt(wiring.inverse, "B")("C")).toBe("F");
+    });
   });
 
-  it("should return the correct letter mapping backwards", () => {
-    expect(rotorEncrypt("B", wiring.inverse)("C")).toBe("F");
+  describe("when ringPosition (ringStellung) is provided", () => {
+    it("should return the correct letter mapping forwards", () => {
+      expect(rotorEncrypt(wiring, "B", "C")("D")).toBe("N");
+    });
+
+    it("should return the correct letter mapping backwards", () => {
+      expect(rotorEncrypt(wiring.inverse, "B", "C")("D")).toBe("Z");
+    });
   });
 });

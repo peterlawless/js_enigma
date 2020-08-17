@@ -7,9 +7,9 @@ const makeM4Reflector = (
   ringPosition = "A"
 ) =>
   compose(
-    rotorEncrypt(ringPosition, greekWheel.inverse),
+    rotorEncrypt(greekWheel.inverse, ringPosition),
     getLetterMappingFrom(thinReflector),
-    rotorEncrypt(ringPosition, greekWheel)
+    rotorEncrypt(greekWheel, ringPosition)
   );
 
 export default makeM4Reflector;
