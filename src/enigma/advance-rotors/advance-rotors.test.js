@@ -12,7 +12,7 @@ describe("advanceRotors", () => {
       ];
     });
 
-    test("only the middle rotor should turn", () => {
+    test("the middle rotor and fast rotor should advance", () => {
       expect(advanceRotors(settings)).toMatchObject([
         { rotor: ROTORS.I, rotorPosition: "A" },
         { rotor: ROTORS.II, rotorPosition: "C" },
