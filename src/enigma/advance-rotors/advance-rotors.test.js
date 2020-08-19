@@ -38,4 +38,22 @@ describe("advanceRotors", () => {
       ]);
     });
   });
+
+  describe("when neither the middle nor fast rotors are on a turnover letters", () => {
+    beforeEach(() => {
+      settings = [
+        { rotor: ROTORS.I, rotorPosition: "A" },
+        { rotor: ROTORS.II, rotorPosition: "B" },
+        { rotor: ROTORS.III, rotorPosition: "W" }
+      ];
+    });
+
+    test("only the fast rotor should advance", () => {
+      expect(advanceRotors(settings)).toMatchObject([
+        { rotor: ROTORS.I, rotorPosition: "A" },
+        { rotor: ROTORS.II, rotorPosition: "B" },
+        { rotor: ROTORS.III, rotorPosition: "X" }
+      ]);
+    });
+  });
 });
