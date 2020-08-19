@@ -1,24 +1,28 @@
 import { alphabetLoopIncrement } from "../../utils";
 
 const advanceRotors = settings => {
-  let rotor, rotorPosition;
+  let rotorSetting, rotor, rotorPosition, isOnTurnoverLetter;
   let newSettings = [];
-  let rotorSetting;
+  // rightmost rotor always advances because its ratchet is completely exposed
   let shouldRotorAdvance = true;
   for (let i = settings.length - 1; i >= 0; i--) {
-    ({ rotor, rotorPosition } = settings[i]);
-    if (shouldRotorAdvance) {
-      rotorSetting = {
-        rotor,
-        rotorPosition: alphabetLoopIncrement(rotorPosition)
-      };
-      // we re-evaluate shouldRotorAdvance ONLY if it is true
-      // i.e., once it becomes false, it cannot become true again
-      shouldRotorAdvance = Boolean(rotor.turnoverLetters[rotorPosition]);
-    } else {
-      rotorSetting = { rotor, rotorPosition };
-    }
-    newSettings.unshift(rotorSetting);
+    rotorSetting = settings[i];
+    ({ rotor, rotorPosition } = rotorSetting);
+    // https://www.youtube.com/watch?v=5StZlF-clPc
+    // Enigma's "double step anomaly" turns over a rotor if:
+    // 1) the rotor is NOT the leftmost AND it is on a turnover letter
+    // 2) its right neighbor is on a turnover letter
+    isOnTurnoverLetter = Boolean(
+      rotor.turnoverLetters[rotorPosition] && i !== 0
+    );
+    newSettings.unshift({
+      ...rotorSetting,
+      rotorPosition:
+        shouldRotorAdvance || isOnTurnoverLetter
+          ? alphabetLoopIncrement(rotorPosition)
+          : rotorPosition
+    });
+    shouldRotorAdvance = isOnTurnoverLetter;
   }
   return newSettings;
 };

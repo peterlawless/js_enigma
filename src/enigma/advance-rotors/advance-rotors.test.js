@@ -12,7 +12,7 @@ describe("advanceRotors", () => {
       ];
     });
 
-    it("should turn over the middle rotor", () => {
+    test("only the middle rotor should turn", () => {
       expect(advanceRotors(settings)).toMatchObject([
         { rotor: ROTORS.I, rotorPosition: "A" },
         { rotor: ROTORS.II, rotorPosition: "C" },
@@ -21,38 +21,20 @@ describe("advanceRotors", () => {
     });
   });
 
-  describe("when the middle rotor and the fast rotor are both on a turnover letter", () => {
+  describe("when the middle rotor is on a turnover letter", () => {
     beforeEach(() => {
       settings = [
-        { rotor: ROTORS.I, rotorPosition: "A" },
+        { rotor: ROTORS.III, rotorPosition: "A" },
         { rotor: ROTORS.II, rotorPosition: "E" },
-        { rotor: ROTORS.III, rotorPosition: "V" }
+        { rotor: ROTORS.I, rotorPosition: "R" }
       ];
     });
 
-    it("should also turn over the slow (first) rotor", () => {
+    test("all three rotors should turn over", () => {
       expect(advanceRotors(settings)).toMatchObject([
-        { rotor: ROTORS.I, rotorPosition: "B" },
+        { rotor: ROTORS.III, rotorPosition: "B" },
         { rotor: ROTORS.II, rotorPosition: "F" },
-        { rotor: ROTORS.III, rotorPosition: "W" }
-      ]);
-    });
-  });
-
-  describe("when the middle rotor is on a turnover letter but the fast (last) rotor is NOT", () => {
-    beforeEach(() => {
-      settings = [
-        { rotor: ROTORS.I, rotorPosition: "A" },
-        { rotor: ROTORS.II, rotorPosition: "E" },
-        { rotor: ROTORS.III, rotorPosition: "C" }
-      ];
-    });
-
-    it("should only advance the fast (last) rotor", () => {
-      expect(advanceRotors(settings)).toMatchObject([
-        { rotor: ROTORS.I, rotorPosition: "A" },
-        { rotor: ROTORS.II, rotorPosition: "E" },
-        { rotor: ROTORS.III, rotorPosition: "D" }
+        { rotor: ROTORS.I, rotorPosition: "S" }
       ]);
     });
   });
