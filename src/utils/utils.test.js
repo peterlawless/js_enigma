@@ -4,6 +4,7 @@ import {
   getDistanceBetweenLetters,
   getLetterPlusShift,
   isSingleLetter,
+  validateIsSingleLetter,
   getLetterMappingFrom,
   alphabetLoopIncrement,
   alphabetLoopDecrement,
@@ -50,6 +51,24 @@ describe("isSingleLetter", function () {
 
   it("should return true when given a single capital letter", function () {
     expect(isSingleLetter("A")).toBe(true);
+  });
+});
+
+describe("validateIsSingleLetter", () => {
+  it("should throw an error when given an empty string", function () {
+    expect(() => validateIsSingleLetter("")).toThrowError(
+      new Error("invalid letter: ")
+    );
+  });
+
+  it("should throw an error when given a single lowercase letter", function () {
+    expect(() => validateIsSingleLetter("a")).toThrowError(
+      new Error("invalid letter: a")
+    );
+  });
+
+  it("should NOT throw an error when given a single capital letter", function () {
+    expect(() => validateIsSingleLetter("A")).not.toThrowError();
   });
 });
 

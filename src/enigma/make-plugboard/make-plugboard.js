@@ -1,11 +1,5 @@
 import BiMap from "mnemonist/bi-map";
-import { getLetterMappingFrom, isSingleLetter } from "../../utils";
-
-const validateIsSingleLetter = letter => {
-  if (!isSingleLetter(letter)) {
-    throw new Error(`invalid letter: ${letter}`);
-  }
-};
+import { getLetterMappingFrom, validateIsSingleLetter } from "../../utils";
 
 const validateUniqueMapping = (letter, biMap) => {
   if (biMap.has(letter)) {

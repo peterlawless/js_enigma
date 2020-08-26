@@ -49,6 +49,12 @@ export function isSingleLetter(letter) {
   return ALPHABET_BI_MAP.has(letter);
 }
 
+export const validateIsSingleLetter = letter => {
+  if (!isSingleLetter(letter)) {
+    throw new Error(`invalid letter: ${letter}`);
+  }
+};
+
 export const getLetterMappingFrom = biMap => letter =>
   biMap.get(letter) || biMap.inverse.get(letter) || letter;
 
