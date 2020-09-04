@@ -20,7 +20,7 @@ describe("makeEnigma", function () {
       randomPick(alphabetArray)
     );
 
-    const rotorScrambler = makeRotorScrambler([
+    const rotorSettings = [
       {
         rotor: ROTORS[randomPick(rotorKeys)],
         rotorPosition: randomPick(alphabetArray)
@@ -33,9 +33,9 @@ describe("makeEnigma", function () {
         rotor: ROTORS[randomPick(rotorKeys)],
         rotorPosition: randomPick(alphabetArray)
       }
-    ]);
+    ];
 
-    const enigma = makeEnigma(reflector)(rotorScrambler);
+    const enigma = makeEnigma(reflector)(rotorSettings);
 
     const plainLetter = randomPick(alphabetArray);
 

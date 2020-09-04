@@ -1,7 +1,6 @@
 import advanceRotors from "../advance-rotors";
-import makeRotorScrambler from "../make-rotor-scrambler";
 import makeEnigma from "../make-enigma";
-import { compose, isSingleLetter } from "../../utils";
+import { isSingleLetter } from "../../utils";
 
 /**
  * @description this function will likely be useful for an "interactive mode" simulator where the user wants to encrypt one letter at a time
@@ -9,7 +8,7 @@ import { compose, isSingleLetter } from "../../utils";
  */
 export const singleKeyDepress = (enigma, rotorSettings, letter) => {
   const newSettings = advanceRotors(rotorSettings);
-  const encrypt = compose(enigma, makeRotorScrambler)(newSettings);
+  const encrypt = enigma(newSettings);
   return [encrypt(letter), newSettings];
 };
 
