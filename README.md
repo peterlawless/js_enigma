@@ -72,13 +72,38 @@ Assume the following settings
 import { makeM4Reflector, GREEK_WHEELS, THIN_REFLECTORS } from "reflectors";
 
 // function to build the plugboard
-import { buildM4Plugboard } from "plugboards";
+import { makeM4Plugboard } from "plugboards";
 
 // import rotors
 import { M4 as ROTORS } from "rotors";
 
 // and the function to tie it all together
-import encrypt from "enigma";
+import enigma from "enigma";
+
+const plugboard = makeM4Plugboard([
+  [18, 26],
+  [17, 4],
+  [21, 6],
+  [3, 16],
+  [19, 14],
+  [22, 7],
+  [8, 1],
+  [12, 25],
+  [5, 9],
+  [10, 15]
+]);
+
+const reflector = makeM4Reflector(REFLECTORS.b, GREEK_WHEELS.beta, "H");
+
+const rotorSettings = [
+  { rotor: ROTORS.VII, ringSetting: "G", ringPosition: "F" },
+  { rotor: ROTORS.IV, ringSetting: "N", ringPosition: "K" },
+  { rotor: ROTORS.V, ringSetting: "O", ringPosition: "D" }
+];
+
+const encrpt = enigma(plugboard, reflector, rotorSettings);
+
+console.log(encrypt("What hath God wrought?"));
 ```
 
 ## Acknowledgements
