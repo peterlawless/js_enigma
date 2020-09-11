@@ -7,7 +7,7 @@ const validateUniqueMapping = (letter, biMap) => {
   }
 };
 
-const makePlugboard = letterPairs => {
+const makeStandardPlugboard = letterPairs => {
   const plugboard = BiMap.from(letterPairs);
   for (let [key, value] of plugboard) {
     validateIsSingleLetter(key);
@@ -18,4 +18,4 @@ const makePlugboard = letterPairs => {
   return getLetterMappingFrom(plugboard);
 };
 
-export default makePlugboard;
+export default makeStandardPlugboard;

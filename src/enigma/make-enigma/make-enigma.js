@@ -1,5 +1,5 @@
 import { compose } from "../../utils";
-import makeM4Reflector from "../make-m4-reflector";
+import { makeM4Reflector } from "../reflectors";
 import makeRotorScrambler from "../make-rotor-scrambler";
 
 // rotorScrambler is applied via a second function because it changes with each

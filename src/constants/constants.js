@@ -371,12 +371,3 @@ export const REFLECTORS = {
     U: "Y"
   })
 };
-
-export const REFLECTOR = "reflector";
-export const GREEK_WHEEL = "greekWheel";
-export const SLOW_ROTOR = "slowRotor";
-export const CENTER_ROTOR = "centerRotor";
-export const FAST_ROTOR = "fastRotor";
-
-export const MODEL = "model";
-export const EXPOSED_LETTER = "exposedLetter";

@@ -1,5 +1,5 @@
 import { ROTORS } from "../../constants";
-import makeM4Reflector from "../m4/make-m4-reflector";
+import { makeM4Reflector } from "../reflectors";
 import enigmaEncrypt from "./engima-encrypt";
 
 describe("enigmaEncrypt", () => {
