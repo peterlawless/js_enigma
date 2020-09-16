@@ -59,7 +59,9 @@ export const validateUniqueMapping = biMap => {
   for (let [key, value] of biMap) {
     validateIsSingleLetter(key);
     validateIsSingleLetter(value);
-    if (biMap.has(key) && biMap.inverse.has(key)) {
+    if (biMap.has(value)) {
+      throw new Error(`dual mapping for letter: ${value}`);
+    } else if (biMap.inverse.has(key)) {
       throw new Error(`dual mapping for letter: ${key}`);
     }
   }
