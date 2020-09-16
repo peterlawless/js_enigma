@@ -5,6 +5,7 @@ import {
   getLetterPlusShift,
   isSingleLetter,
   validateIsSingleLetter,
+  validateUniqueMapping,
   getLetterMappingFrom,
   alphabetLoopIncrement,
   alphabetLoopDecrement,
@@ -69,6 +70,20 @@ describe("validateIsSingleLetter", () => {
 
   it("should NOT throw an error when given a single capital letter", function () {
     expect(() => validateIsSingleLetter("A")).not.toThrowError();
+  });
+});
+
+describe("validateUniqueLetterMapping", () => {
+  it("should throw an error when there is a duplicate mapping for the same letter in the BiMap", () => {
+    const badMap = BiMap.from({ A: "B", B: "C" });
+    expect(() => validateUniqueMapping(badMap)).toThrow(
+      new Error("dual mapping for letter: B")
+    );
+  });
+
+  it("should NOT throw an error when each letter mapping is unique", () => {
+    const goodMap = BiMap.from({ A: "B", C: "D" });
+    expect(() => validateUniqueMapping(goodMap)).not.toThrow();
   });
 });
 

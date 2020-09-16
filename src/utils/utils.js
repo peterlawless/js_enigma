@@ -55,6 +55,16 @@ export const validateIsSingleLetter = letter => {
   }
 };
 
+export const validateUniqueMapping = biMap => {
+  for (let [key, value] of biMap) {
+    validateIsSingleLetter(key);
+    validateIsSingleLetter(value);
+    if (biMap.has(key) && biMap.inverse.has(key)) {
+      throw new Error(`dual mapping for letter: ${key}`);
+    }
+  }
+};
+
 export const getLetterMappingFrom = biMap => letter =>
   biMap.get(letter) || biMap.inverse.get(letter) || letter;
 
