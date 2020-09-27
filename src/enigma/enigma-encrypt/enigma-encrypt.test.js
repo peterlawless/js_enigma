@@ -1,10 +1,10 @@
 import { ROTORS } from "../../constants";
-import { makeM4Reflector } from "../reflectors";
+import { buildGreekWheelReflector } from "../../m4";
 import enigmaEncrypt from "./engima-encrypt";
 
 describe("enigmaEncrypt", () => {
   const plugboard = letter => letter;
-  const reflector = makeM4Reflector();
+  const reflector = buildGreekWheelReflector();
   const initialSettings = [
     { rotor: ROTORS.III, rotorPosition: "A" },
     { rotor: ROTORS.II, rotorPosition: "E" },

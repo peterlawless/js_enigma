@@ -1,5 +1,5 @@
 import { REFLECTORS, GREEK_WHEELS, ROTORS } from "../../constants";
-import { makeM4Reflector } from "../reflectors";
+import { buildGreekWheelReflector } from "../../m4";
 import makeEnigma from "./make-enigma";
 
 describe("makeEnigma", function () {
@@ -13,7 +13,7 @@ describe("makeEnigma", function () {
     const reflectorKeys = Object.keys(REFLECTORS);
     const greekWheelKeys = Object.keys(GREEK_WHEELS);
 
-    const reflector = makeM4Reflector(
+    const reflector = buildGreekWheelReflector(
       REFLECTORS[randomPick(reflectorKeys)],
       GREEK_WHEELS[randomPick(greekWheelKeys)],
       randomPick(alphabetArray)

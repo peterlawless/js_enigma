@@ -1,1 +1,1 @@
-export { buildGreekWheelReflector } from "./build-greek-wheel-reflector";
+export { default as buildGreekWheelReflector } from "./build-greek-wheel-reflector";
