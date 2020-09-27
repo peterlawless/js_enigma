@@ -68,42 +68,23 @@ Assume the following settings
 </html>
 
 ```javascript
-// functions build the reflector
-import { makeM4Reflector, GREEK_WHEELS, THIN_REFLECTORS } from "reflectors";
+import {
+  ROTORS,
+  GREEK_WHEELS,
+  THIN_REFLECTORS,
+  buildGreekWheelReflector,
+  buildM4Plugboard
+} from "m4";
 
-// function to build the plugboard
-import { makeM4Plugboard } from "plugboards";
+import Enigma from "enigma";
 
-// import rotors
-import { M4 as ROTORS } from "rotors";
+const enigma = new Enigma()
+  .withRotors(ROTORS.VII, ROTORS.IV, ROTORS.IV)
+  .withRingSettings("G", "N", "O")
+  .withRingSettings("F", "K", "D")
+  .withReflector(buildGreekWheelReflector());
 
-// and the function to tie it all together
-import enigma from "enigma";
-
-const plugboard = makeM4Plugboard([
-  [18, 26],
-  [17, 4],
-  [21, 6],
-  [3, 16],
-  [19, 14],
-  [22, 7],
-  [8, 1],
-  [12, 25],
-  [5, 9],
-  [10, 15]
-]);
-
-const reflector = makeM4Reflector(REFLECTORS.b, GREEK_WHEELS.beta, "H");
-
-const rotorSettings = [
-  { rotor: ROTORS.VII, ringSetting: "G", ringPosition: "F" },
-  { rotor: ROTORS.IV, ringSetting: "N", ringPosition: "K" },
-  { rotor: ROTORS.V, ringSetting: "O", ringPosition: "D" }
-];
-
-const encrpt = enigma(plugboard, reflector, rotorSettings);
-
-console.log(encrypt("What hath God wrought?"));
+console.log(enigma.encryptMessage("What hath God wrought?"));
 ```
 
 ## Acknowledgements
