@@ -5,7 +5,7 @@ import { rotorEncrypt } from "../../utils";
  * @typedef {Object} rotorSetting
  * @property {Object} rotor
  * @property {string} rotorPosition
- * @property {string} ringPosition
+ * @property {string} ringSetting
  */
 
 /**
