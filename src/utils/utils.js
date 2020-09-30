@@ -52,8 +52,22 @@ export function isSingleLetter(letter) {
 export const validateIsSingleLetter = letter => {
   if (!isSingleLetter(letter)) {
     throw new Error(`invalid letter: ${letter}`);
+  } else {
+    return true;
   }
 };
+
+export const getLetterFromNumericKey = int => {
+  const letter = ALPHABET_BI_MAP.inverse.get(int - 1);
+  if (!letter) {
+    throw new Error(`invalid numeric key: ${int}`);
+  } else {
+    return letter;
+  }
+};
+
+export const getNumericKeyFromLetter = letter =>
+  ALPHABET_BI_MAP.get(letter) + 1;
 
 export const validateUniqueMapping = biMap => {
   for (let [key, value] of biMap) {
