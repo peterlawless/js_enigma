@@ -27,8 +27,8 @@ import { rotorEncrypt } from "../../utils";
 const makeRotorScrambler = settings => {
   const forward = letter =>
     settings
-      .map(({ rotorPosition, rotor: { wiring } }) =>
-        rotorEncrypt(wiring, rotorPosition)
+      .map(({ rotorPosition, ringSetting, rotor: { wiring } }) =>
+        rotorEncrypt(wiring, rotorPosition, ringSetting)
       )
       .reduceRight(
         (cipherLetter, rotorScramble) => rotorScramble(cipherLetter),
@@ -37,8 +37,8 @@ const makeRotorScrambler = settings => {
 
   const backward = letter =>
     settings
-      .map(({ rotorPosition, rotor: { wiring } }) =>
-        rotorEncrypt(wiring.inverse, rotorPosition)
+      .map(({ rotorPosition, ringSetting, rotor: { wiring } }) =>
+        rotorEncrypt(wiring.inverse, rotorPosition, ringSetting)
       )
       .reduce(
         (cipherLetter, rotorScramble) => rotorScramble(cipherLetter),

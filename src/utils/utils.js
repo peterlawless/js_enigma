@@ -15,18 +15,14 @@ export const getLetterPlusShift = (letter, shift) =>
 // Thanks, Eric Elliot!
 export const compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
 
-export const rotorEncrypt = (
-  rotorWiring,
-  rotorPosition,
-  ringPosition = "A"
-) => {
+export const rotorEncrypt = (rotorWiring, rotorPosition, ringSetting = "A") => {
   // https://www.cryptomuseum.com/crypto/enigma/working.htm
   // Each wheel has a ring that can be used to rotate the wiring independently of the index.
   // This can be regarded as creating an offset in the opposite direction.
   // The wheel-turnover notches are fixed to the index ring.
   // Therefore the turnover of the next wheel, will always happen at the same letter in the window,
   // but the wiring might be rotated.
-  const rotorOffset = getDistanceBetweenLetters(ringPosition, rotorPosition);
+  const rotorOffset = getDistanceBetweenLetters(ringSetting, rotorPosition);
   return letter => {
     // what wiring element (i.e., letter key on the rotor wiring) is our input letter connecting to?
     const wiringElementToPerformShift = getLetterPlusShift(letter, rotorOffset);

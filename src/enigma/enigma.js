@@ -1,6 +1,9 @@
 import advanceRotors from "./advance-rotors";
+import makeRotorScrambler from "./make-rotor-scrambler";
 import {
   compose,
+  getLetterFromNumericKey,
+  getNumericKeyFromLetter,
   isSingleLetter,
   rotorEncrypt,
   validateIsSingleLetter
@@ -23,17 +26,15 @@ function validateArrayLengthOf(arrLength) {
 }
 
 class Enigma {
-  static ROTOR_COUNT = 3;
   // private instance fields
   #rotorSettings;
   #plugboard;
   #reflector;
+  #withNumericKeys = false;
 
-  constructor() {
-    this.validateArrayLength = validateArrayLengthOf(
-      this.constructor.ROTOR_COUNT
-    ).bind(this);
-    this.#rotorSettings = [{}, {}, {}]; // empty configuration but ready for mapping
+  constructor(rotorCount = 3) {
+    this.validateArrayLength = validateArrayLengthOf(rotorCount).bind(this);
+    this.#rotorSettings = new Array(rotorCount).fill({}, 0, rotorCount); // empty configuration but ready for mapping
     this.#plugboard = letter => letter; // sensible default: no patch cables installed
   }
 
@@ -44,26 +45,13 @@ class Enigma {
     // https://en.wikipedia.org/wiki/Enigma_machine#Additional_details
     const uppercaseLetter = letter.toUpperCase();
     if (isSingleLetter(uppercaseLetter)) {
-      this.rotorSettings = advanceRotors(this.rotorSettings);
+      this.#rotorSettings = advanceRotors(this.#rotorSettings);
+      const rotorScrambler = makeRotorScrambler(this.#rotorSettings);
       return compose(
         this.#plugboard,
-        this.#rotorSettings
-          .map(({ rotorPosition, rotor: { wiring } }) =>
-            rotorEncrypt(wiring.inverse, rotorPosition)
-          )
-          .reduce(
-            (cipherLetter, rotorScramble) => rotorScramble(cipherLetter),
-            letter
-          ),
+        rotorScrambler.backward,
         this.#reflector,
-        this.#rotorSettings
-          .map(({ rotorPosition, rotor: { wiring } }) =>
-            rotorEncrypt(wiring, rotorPosition)
-          )
-          .reduceRight(
-            (cipherLetter, rotorScramble) => rotorScramble(cipherLetter),
-            letter
-          ),
+        rotorScrambler.forward,
         this.#plugboard
       )(letter);
     } else {
@@ -87,7 +75,7 @@ class Enigma {
 
   withRotors = (...rotors) => {
     this.validateArrayLength(rotors);
-    this.#rotorSettings.map((rotorSetting, index) => ({
+    this.#rotorSettings = this.#rotorSettings.map((rotorSetting, index) => ({
       ...rotorSetting,
       rotor: rotors[index]
     }));
@@ -97,7 +85,7 @@ class Enigma {
   withRingSettings = (...ringSettings) => {
     this.validateArrayLength(ringSettings);
     ringSettings.forEach(validateIsSingleLetter);
-    this.#rotorSettings.map((rotorSetting, index) => ({
+    this.#rotorSettings = this.#rotorSettings.map((rotorSetting, index) => ({
       ...rotorSetting,
       ringSetting: ringSettings[index]
     }));
@@ -107,7 +95,7 @@ class Enigma {
   withRotorPositions = (...rotorPositions) => {
     this.validateArrayLength(rotorPositions);
     rotorPositions.forEach(validateIsSingleLetter);
-    this.#rotorSettings.map((rotorSetting, index) => ({
+    this.#rotorSettings = this.#rotorSettings.map((rotorSetting, index) => ({
       ...rotorSetting,
       rotorPosition: rotorPositions[index]
     }));
@@ -120,3 +108,11 @@ class Enigma {
 }
 
 export default Enigma;
+
+// map over inputs
+// make sure they are either all letters or numeric keys
+// if (typeof element === "string") {
+//   validateIsSingleLetter(element)
+// } else if (typeof element === "number") {
+//   getLetterFromNumericKey(element)
+// }
