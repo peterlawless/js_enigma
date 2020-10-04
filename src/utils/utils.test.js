@@ -74,8 +74,8 @@ describe("validateIsSingleLetter", () => {
     expect(() => validateIsSingleLetter("A")).not.toThrowError();
   });
 
-  it("should return true when given a single capital letter", () => {
-    expect(validateIsSingleLetter("A")).toBe(true);
+  it("should return the provided letter when given a single capital letter", () => {
+    expect(validateIsSingleLetter("A")).toBe("A");
   });
 });
 

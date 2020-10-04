@@ -49,7 +49,7 @@ export const validateIsSingleLetter = letter => {
   if (!isSingleLetter(letter)) {
     throw new Error(`invalid letter: ${letter}`);
   } else {
-    return true;
+    return letter;
   }
 };
 

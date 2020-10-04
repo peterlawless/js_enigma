@@ -5,38 +5,60 @@ import {
   getLetterFromNumericKey,
   getNumericKeyFromLetter,
   isSingleLetter,
-  rotorEncrypt,
   validateIsSingleLetter
 } from "../utils";
-
-// function instead of fat arrow to make it "bindable"
-function validateArrayLengthOf(arrLength) {
-  return function (arr) {
-    if (!(arr instanceof Array)) {
-      throw new Error(
-        `Expected an array but instead received: ${arr.constructor.name}`
-      );
-    }
-    if (arr.length !== arrLength) {
-      throw new Error(
-        `Expected ${arrLength} elements but instead received: ${arr.length}`
-      );
-    }
-  };
-}
 
 class Enigma {
   // private instance fields
   #rotorSettings;
   #plugboard;
   #reflector;
-  #withNumericKeys = false;
+  #rotorCount;
+  #hasNumericRotorKeys;
 
   constructor(rotorCount = 3) {
-    this.validateArrayLength = validateArrayLengthOf(rotorCount).bind(this);
+    this.#rotorCount = rotorCount;
     this.#rotorSettings = new Array(rotorCount).fill({}, 0, rotorCount); // empty configuration but ready for mapping
     this.#plugboard = letter => letter; // sensible default: no patch cables installed
   }
+
+  #validateArgumentsLength = args => {
+    if (!(args.length === this.#rotorCount)) {
+      throw new Error(
+        `expected ${this.#rotorCount} arguments but got ${args.length} instead`
+      );
+    }
+  };
+
+  #validateRotorConfiguration = args => {
+    const validatedSettings = [];
+    this.#validateArgumentsLength(args);
+    const warningStatement =
+      "Avoid switching between alphabetic and numeric settings keys as this will change the format of read-only rotorPositions property";
+    for (const element of args) {
+      if (typeof element === "string") {
+        validatedSettings.push(validateIsSingleLetter(element));
+        if (this.#hasNumericRotorKeys) {
+          console.warn(warningStatement);
+          this.#hasNumericRotorKeys = false;
+        }
+      } else if (typeof element === "number") {
+        validatedSettings.push(getLetterFromNumericKey(element));
+        if (!this.#hasNumericRotorKeys) {
+          if (this.#hasNumericRotorKeys === false) {
+            // only warn if we are explicitly switching from alphabetic keys to numeric
+            console.warn(warningStatement);
+          }
+          this.#hasNumericRotorKeys = true;
+        }
+      } else {
+        throw new Error(
+          `only capital letters A-Z or numbers 1-26 are permitted input, cannot use ${element}`
+        );
+      }
+    }
+    return validatedSettings;
+  };
 
   encryptLetter = letter => {
     // punctuation, whitespace, NUMBERS, etc., will just be appended as-is
@@ -74,7 +96,7 @@ class Enigma {
   };
 
   withRotors = (...rotors) => {
-    this.validateArrayLength(rotors);
+    this.#validateArgumentsLength(rotors);
     this.#rotorSettings = this.#rotorSettings.map((rotorSetting, index) => ({
       ...rotorSetting,
       rotor: rotors[index]
@@ -83,36 +105,36 @@ class Enigma {
   };
 
   withRingSettings = (...ringSettings) => {
-    this.validateArrayLength(ringSettings);
+    const validatedRingSettings = this.#validateRotorConfiguration(
+      ringSettings
+    );
     ringSettings.forEach(validateIsSingleLetter);
     this.#rotorSettings = this.#rotorSettings.map((rotorSetting, index) => ({
       ...rotorSetting,
-      ringSetting: ringSettings[index]
+      ringSetting: validatedRingSettings[index]
     }));
     return this;
   };
 
   withRotorPositions = (...rotorPositions) => {
-    this.validateArrayLength(rotorPositions);
+    const validatedRotorPositions = this.#validateRotorConfiguration(
+      rotorPositions
+    );
     rotorPositions.forEach(validateIsSingleLetter);
     this.#rotorSettings = this.#rotorSettings.map((rotorSetting, index) => ({
       ...rotorSetting,
-      rotorPosition: rotorPositions[index]
+      rotorPosition: validatedRotorPositions[index]
     }));
     return this;
   };
 
   get rotorPositions() {
-    return this.#rotorSettings.map(({ rotorPosition }) => rotorPosition);
+    return this.#rotorSettings.map(({ rotorPosition }) =>
+      this.#hasNumericRotorKeys
+        ? getNumericKeyFromLetter(rotorPosition)
+        : rotorPosition
+    );
   }
 }
 
 export default Enigma;
-
-// map over inputs
-// make sure they are either all letters or numeric keys
-// if (typeof element === "string") {
-//   validateIsSingleLetter(element)
-// } else if (typeof element === "number") {
-//   getLetterFromNumericKey(element)
-// }
