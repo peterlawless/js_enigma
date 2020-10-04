@@ -38,17 +38,18 @@ class Enigma {
     for (const element of args) {
       if (typeof element === "string") {
         validatedSettings.push(validateIsSingleLetter(element));
-        if (this.#hasNumericRotorKeys) {
+        if (this.#hasNumericRotorKeys === undefined) {
+          this.#hasNumericRotorKeys = false;
+        } else if (this.#hasNumericRotorKeys) {
           console.warn(warningStatement);
           this.#hasNumericRotorKeys = false;
         }
       } else if (typeof element === "number") {
         validatedSettings.push(getLetterFromNumericKey(element));
-        if (!this.#hasNumericRotorKeys) {
-          if (this.#hasNumericRotorKeys === false) {
-            // only warn if we are explicitly switching from alphabetic keys to numeric
-            console.warn(warningStatement);
-          }
+        if (this.#hasNumericRotorKeys === undefined) {
+          this.#hasNumericRotorKeys = true;
+        } else if (!this.#hasNumericRotorKeys) {
+          console.warn(warningStatement);
           this.#hasNumericRotorKeys = true;
         }
       } else {
@@ -108,7 +109,6 @@ class Enigma {
     const validatedRingSettings = this.#validateRotorConfiguration(
       ringSettings
     );
-    ringSettings.forEach(validateIsSingleLetter);
     this.#rotorSettings = this.#rotorSettings.map((rotorSetting, index) => ({
       ...rotorSetting,
       ringSetting: validatedRingSettings[index]
@@ -120,7 +120,6 @@ class Enigma {
     const validatedRotorPositions = this.#validateRotorConfiguration(
       rotorPositions
     );
-    rotorPositions.forEach(validateIsSingleLetter);
     this.#rotorSettings = this.#rotorSettings.map((rotorSetting, index) => ({
       ...rotorSetting,
       rotorPosition: validatedRotorPositions[index]
