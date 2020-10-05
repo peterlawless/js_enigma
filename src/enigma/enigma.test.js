@@ -5,6 +5,8 @@ import { ROTORS } from "../constants";
 describe("Enigma", () => {
   let realConsoleWarn;
   const tooFewArgsError = new Error("expected 3 arguments but got 2 instead");
+  const avoidSwitchingWarning =
+    "Avoid switching between alphabetic and numeric settings keys as this will change the format of read-only rotorPositions property";
   const enigma = new Enigma();
   enigma
     .withReflector(buildGreekWheelReflector())
@@ -12,11 +14,9 @@ describe("Enigma", () => {
     .withRingSettings("F", "O", "O")
     .withRotorPositions("B", "A", "R");
 
-  // const consoleWarnSpy = jest.spyOn(console, "warn");
-
-  // afterEach(() => {
-  //   jest.clearAllMocks();
-  // });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
   beforeAll(() => {
     realConsoleWarn = console.warn;
@@ -37,31 +37,80 @@ describe("Enigma", () => {
   describe("setting the Ringstellung", () => {
     describe("when provided 3 arguments", () => {
       describe("when provided numeric keys", () => {
-        it("should successfully set the Ringstellung", () => {
-          expect(() => enigma.withRingSettings(6, 15, 15)).not.toThrow();
+        describe("when switching from alphabetic keys to numeric keys", () => {
+          beforeEach(() => {
+            enigma.withRingSettings("F", "O", "O");
+            enigma.withRingSettings(6, 15, 15);
+          });
+
+          it("should log a warning about switching between alphabetic and numeric settings", () => {
+            expect(console.warn).toHaveBeenCalledTimes(1);
+            expect(console.warn).toHaveBeenCalledWith(avoidSwitchingWarning);
+          });
         });
 
         it("should return the rotorPositions property with numeric keys", () => {
+          enigma.withRingSettings(6, 15, 15);
           expect(enigma.rotorPositions).toEqual([2, 1, 18]);
-        });
-
-        it("should log a warning for switching between key formats", () => {
-          expect(console.warn).toHaveBeenCalledTimes(1);
         });
       });
 
       describe("when provided alphabetic keys", () => {
-        it("should successfully set the Ringstellung", () => {
-          expect(() => enigma.withRingSettings("F", "O", "O")).not.toThrow();
+        describe("when switching from numeric keys to alphabetic keys", () => {
+          beforeEach(() => {
+            enigma.withRingSettings(6, 15, 15);
+            enigma.withRingSettings("F", "O", "O");
+          });
+
+          it("should log a warning about switching between alphabetic and numeric settings", () => {
+            expect(console.warn).toHaveBeenCalledTimes(1);
+            expect(console.warn).toHaveBeenCalledWith(avoidSwitchingWarning);
+          });
         });
 
         it("should return the rotorPositions property with alphabetic keys", () => {
+          enigma.withRingSettings("F", "O", "O");
           expect(enigma.rotorPositions).toEqual(["B", "A", "R"]);
         });
       });
 
-      describe("when provided mixed keys", () => {});
-      describe("when provided neither alphabetic nor numeric keys", () => {});
+      describe("when provided mixed keys", () => {
+        beforeEach(() => {
+          enigma.withRingSettings("F", 15, "O");
+        });
+
+        it("should log a warning about switching between alphabetic and numeric settings", () => {
+          expect(console.warn).toHaveBeenCalledTimes(2);
+          expect(console.warn).toHaveBeenNthCalledWith(
+            1,
+            avoidSwitchingWarning
+          );
+          expect(console.warn).toHaveBeenNthCalledWith(
+            2,
+            avoidSwitchingWarning
+          );
+        });
+
+        it("should return the rotorPositions property according to the _last_ setting type provided", () => {
+          expect(enigma.rotorPositions).toEqual(["B", "A", "R"]);
+        });
+      });
+
+      describe("when provided neither alphabetic nor numeric keys", () => {
+        it("should throw an error", () => {
+          expect(() =>
+            enigma.withRingSettings(
+              { letter: "F" },
+              { letter: "O" },
+              { letter: "O" }
+            )
+          ).toThrow(
+            new Error(
+              "only capital letters A-Z or numbers 1-26 are permitted input"
+            )
+          );
+        });
+      });
     });
 
     describe("when provided more or less than 3 arguments", () => {
@@ -75,8 +124,80 @@ describe("Enigma", () => {
 
   describe("setting the Grundstellung", () => {
     describe("when provided 3 arguments", () => {
-      it("should successfully set the Grundstellung", () => {
-        expect(() => enigma.withRotorPositions("B", "A", "R")).not.toThrow();
+      describe("when provided numeric keys", () => {
+        describe("when switching from alphabetic keys to numeric keys", () => {
+          beforeEach(() => {
+            enigma.withRotorPositions("B", "A", "R");
+            enigma.withRotorPositions(2, 1, 18);
+          });
+
+          it("should log a warning about switching between alphabetic and numeric settings", () => {
+            expect(console.warn).toHaveBeenCalledTimes(1);
+            expect(console.warn).toHaveBeenCalledWith(avoidSwitchingWarning);
+          });
+        });
+
+        it("should return the rotorPositions property with numeric keys", () => {
+          enigma.withRotorPositions(2, 1, 18);
+          expect(enigma.rotorPositions).toEqual([2, 1, 18]);
+        });
+      });
+
+      describe("when provided alphabetic keys", () => {
+        describe("when switching from numeric keys to alphabetic keys", () => {
+          beforeEach(() => {
+            enigma.withRotorPositions(2, 1, 18);
+            enigma.withRotorPositions("B", "A", "R");
+          });
+
+          it("should log a warning about switching between alphabetic and numeric settings", () => {
+            expect(console.warn).toHaveBeenCalledTimes(1);
+            expect(console.warn).toHaveBeenCalledWith(avoidSwitchingWarning);
+          });
+        });
+
+        it("should return the rotorPositions property with alphabetic keys", () => {
+          enigma.withRotorPositions("B", "A", "R");
+          expect(enigma.rotorPositions).toEqual(["B", "A", "R"]);
+        });
+      });
+
+      describe("when provided mixed keys", () => {
+        beforeEach(() => {
+          enigma.withRingSettings("F", 15, "O");
+        });
+
+        it("should log a warning about switching between alphabetic and numeric settings", () => {
+          expect(console.warn).toHaveBeenCalledTimes(2);
+          expect(console.warn).toHaveBeenNthCalledWith(
+            1,
+            avoidSwitchingWarning
+          );
+          expect(console.warn).toHaveBeenNthCalledWith(
+            2,
+            avoidSwitchingWarning
+          );
+        });
+
+        it("should return the rotorPositions property according to the _last_ setting type provided", () => {
+          expect(enigma.rotorPositions).toEqual(["B", "A", "R"]);
+        });
+      });
+
+      describe("when provided neither alphabetic nor numeric keys", () => {
+        it("should throw an error", () => {
+          expect(() =>
+            enigma.withRingSettings(
+              { letter: "F" },
+              { letter: "O" },
+              { letter: "O" }
+            )
+          ).toThrow(
+            new Error(
+              "only capital letters A-Z or numbers 1-26 are permitted input"
+            )
+          );
+        });
       });
     });
 

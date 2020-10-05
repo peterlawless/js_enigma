@@ -54,7 +54,7 @@ class Enigma {
         }
       } else {
         throw new Error(
-          `only capital letters A-Z or numbers 1-26 are permitted input, cannot use ${element}`
+          `only capital letters A-Z or numbers 1-26 are permitted input`
         );
       }
     }
