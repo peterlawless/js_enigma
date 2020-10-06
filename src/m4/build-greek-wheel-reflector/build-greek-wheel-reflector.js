@@ -1,8 +1,8 @@
 import { compose, rotorEncrypt, getLetterMappingFrom } from "../../utils";
-import { REFLECTORS, GREEK_WHEELS } from "../../constants";
+import { THIN_REFLECTORS, GREEK_WHEELS } from "../constants";
 
-const makeM4Reflector = (
-  thinReflector = REFLECTORS.b,
+const buildGreekWheelReflector = (
+  thinReflector = THIN_REFLECTORS.b,
   greekWheel = GREEK_WHEELS.beta,
   ringPosition = "A"
 ) =>
@@ -12,4 +12,4 @@ const makeM4Reflector = (
     rotorEncrypt(greekWheel, ringPosition)
   );
 
-export default makeM4Reflector;
+export default buildGreekWheelReflector;

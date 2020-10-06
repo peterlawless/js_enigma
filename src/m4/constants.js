@@ -1,0 +1,93 @@
+import BiMap from "mnemonist/bi-map";
+
+export const GREEK_WHEELS = {
+  beta: BiMap.from({
+    A: "L",
+    B: "E",
+    C: "Y",
+    D: "J",
+    E: "V",
+    F: "C",
+    G: "N",
+    H: "I",
+    I: "X",
+    J: "W",
+    K: "P",
+    L: "B",
+    M: "Q",
+    N: "M",
+    O: "D",
+    P: "R",
+    Q: "T",
+    R: "A",
+    S: "K",
+    T: "Z",
+    U: "G",
+    V: "F",
+    W: "U",
+    X: "H",
+    Y: "O",
+    Z: "S"
+  }),
+  gamma: BiMap.from({
+    A: "F",
+    B: "S",
+    C: "O",
+    D: "K",
+    E: "A",
+    F: "N",
+    G: "U",
+    H: "E",
+    I: "R",
+    J: "H",
+    K: "M",
+    L: "B",
+    M: "T",
+    N: "I",
+    O: "Y",
+    P: "C",
+    Q: "W",
+    R: "L",
+    S: "Q",
+    T: "P",
+    U: "Z",
+    V: "X",
+    W: "V",
+    X: "G",
+    Y: "J",
+    Z: "D"
+  })
+};
+
+export const THIN_REFLECTORS = {
+  b: BiMap.from({
+    A: "E",
+    B: "N",
+    C: "K",
+    D: "Q",
+    F: "U",
+    G: "Y",
+    H: "W",
+    I: "J",
+    L: "O",
+    M: "P",
+    R: "X",
+    S: "Z",
+    T: "V"
+  }),
+  c: BiMap.from({
+    A: "R",
+    B: "D",
+    C: "O",
+    E: "J",
+    F: "N",
+    G: "T",
+    H: "K",
+    I: "V",
+    L: "M",
+    P: "W",
+    Q: "Z",
+    S: "X",
+    U: "Y"
+  })
+};

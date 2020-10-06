@@ -3,8 +3,11 @@ import {
   compose,
   getDistanceBetweenLetters,
   getLetterPlusShift,
+  getLetterFromNumericKey,
+  getNumericKeyFromLetter,
   isSingleLetter,
   validateIsSingleLetter,
+  validateUniqueMapping,
   getLetterMappingFrom,
   alphabetLoopIncrement,
   alphabetLoopDecrement,
@@ -55,20 +58,57 @@ describe("isSingleLetter", function () {
 });
 
 describe("validateIsSingleLetter", () => {
-  it("should throw an error when given an empty string", function () {
+  it("should throw an error when given an empty string", () => {
     expect(() => validateIsSingleLetter("")).toThrowError(
       new Error("invalid letter: ")
     );
   });
 
-  it("should throw an error when given a single lowercase letter", function () {
+  it("should throw an error when given a single lowercase letter", () => {
     expect(() => validateIsSingleLetter("a")).toThrowError(
       new Error("invalid letter: a")
     );
   });
 
-  it("should NOT throw an error when given a single capital letter", function () {
+  it("should NOT throw an error when given a single capital letter", () => {
     expect(() => validateIsSingleLetter("A")).not.toThrowError();
+  });
+
+  it("should return the provided letter when given a single capital letter", () => {
+    expect(validateIsSingleLetter("A")).toBe("A");
+  });
+});
+
+describe("getLetterFromNumericKey", () => {
+  it("should throw an error when provided an invalid number", () => {
+    expect(() => getLetterFromNumericKey(27)).toThrow(
+      new Error("invalid numeric key: 27")
+    );
+  });
+
+  it("should return the letter associated with the numbers 1-26", () => {
+    expect(getLetterFromNumericKey(26)).toBe("Z");
+  });
+});
+
+describe("getNumericKeyFromLetter", () => {
+  it("should return the numeric key associated with the provided letter", () => {
+    expect(getNumericKeyFromLetter("A")).toBe(1);
+    expect(getNumericKeyFromLetter("Z")).toBe(26);
+  });
+});
+
+describe("validateUniqueLetterMapping", () => {
+  it("should throw an error when there is a duplicate mapping for the same letter in the BiMap", () => {
+    const badMap = BiMap.from({ A: "B", B: "C" });
+    expect(() => validateUniqueMapping(badMap)).toThrow(
+      new Error("dual mapping for letter: B")
+    );
+  });
+
+  it("should NOT throw an error when each letter mapping is unique", () => {
+    const goodMap = BiMap.from({ A: "B", C: "D" });
+    expect(() => validateUniqueMapping(goodMap)).not.toThrow();
   });
 });
 
