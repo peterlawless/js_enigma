@@ -14,13 +14,13 @@ describe("Enigma", () => {
     .withRingSettings("F", "O", "O")
     .withRotorPositions("B", "A", "R");
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   beforeAll(() => {
     realConsoleWarn = console.warn;
     console.warn = jest.fn();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   afterAll(() => {
@@ -212,17 +212,48 @@ describe("Enigma", () => {
 
   describe("encryption", () => {
     let cipherLetter;
+    describe("single character encryption", () => {
+      describe("when input is a single letter", () => {
+        beforeAll(() => {
+          enigma
+            .withRingSettings("F", "O", "O")
+            .withRotorPositions("B", "A", "R");
+          cipherLetter = enigma.encryptCharacter("A");
+        });
 
-    beforeAll(() => {
-      cipherLetter = enigma.encryptLetter("A");
-    });
+        it("should not map a letter back onto itself", () => {
+          expect(cipherLetter).not.toEqual("A");
+        });
 
-    it("should not map a letter back onto itself", () => {
-      expect(cipherLetter).not.toEqual("A");
-    });
+        test("the rotors should advance", () => {
+          expect(enigma.rotorPositions).toEqual(["B", "A", "S"]);
+        });
 
-    test("the rotors should advance", () => {
-      expect(enigma.rotorPositions).toEqual(["B", "A", "S"]);
+        it("should perform reversible encryption", () => {
+          expect(
+            enigma
+              .withRotorPositions("B", "A", "R")
+              .encryptCharacter(cipherLetter)
+          ).toBe("A");
+        });
+      });
+
+      describe("when input is NOT a single letter", () => {
+        beforeAll(() => {
+          enigma
+            .withRingSettings("F", "O", "O")
+            .withRotorPositions("B", "A", "R");
+          cipherLetter = enigma.encryptCharacter(" ");
+        });
+
+        test("the rotors should NOT advance", () => {
+          expect(enigma.rotorPositions).toEqual(["B", "A", "R"]);
+        });
+
+        it("should return the input character", () => {
+          expect(cipherLetter).toBe(" ");
+        });
+      });
     });
   });
 });

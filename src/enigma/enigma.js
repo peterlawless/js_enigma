@@ -61,7 +61,7 @@ class Enigma {
     return validatedSettings;
   };
 
-  encryptLetter = letter => {
+  encryptCharacter = letter => {
     // punctuation, whitespace, NUMBERS, etc., will just be appended as-is
     // If the objective is to be truly authentic, the plaintext should be "cleaned"
     // with letter encodings or abbreviations for numbers and punctuation
@@ -83,7 +83,7 @@ class Enigma {
   };
 
   encryptMessage = plainText => {
-    plainText.split("").map(this.encryptLetter).join("");
+    plainText.split("").map(this.encryptCharacter).join("");
   };
 
   withPlugboard = plugBoard => {
