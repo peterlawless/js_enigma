@@ -16,79 +16,41 @@ For a more detailed explanation of the inner workings of Enigma, visit [cryptomu
 
 ### Working example
 
-This library will enforce that each Enigma component works authentically against the originals but will not enforce that historically accurate combinations of those components are used. Here we'll encrypt a message using the M4 Enigma, the variant used exclusively by the U-Boats (submarines) of the Kriegsmarine.
+This library will enforce that each Enigma component works authentically against the originals but will not enforce that historically accurate combinations of those components are used. Here we'll encrypt a message using components from the M4 Enigma, the variant used exclusively by the U-Boats (submarines) of the Kriegsmarine.
 
-Assume the following settings
+Assume the following settings:
 
-<html>
-  <table>
-    <caption>Inner settings <em>(Innere Einstellung)</em></caption>
-    <thead>
-      <tr>
-        <th>Thin reflector</th>
-        <th>Greek Wheel</th>
-        <th colspan="3">Rotors <em>(Walzelage)</em></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>B</td>
-        <td>Beta</td>
-        <td>VII</td>
-        <td>IV</td>
-        <td>V</td>
-      </tr>
-      <tr>
-        <td/>
-        <td>A</td>
-        <td>G</td>
-        <td>N</td>
-        <td>O</td>
-      </tr>
-    </tbody>
-  </table>
-</html>
+- Wheel order _(Walzenlage)_: I II III
+- Ring settings _(Ringstellung)_: F O O
+- Rotor positions _(Grundstellung)_: B A R
 
-<html>
-  <table>
-    <caption>External settings <em>(Äußere Einstellung)</em></caption>
-    <thead>
-      <tr>
-        <th>Plugboard settings <em>(Steckerverbindungen)</em></th>
-        <th>Initial rotor positions <em>(Grundstellung)</em></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>18/26  17/4  21/6  3/16  19/14  22/7  8/1  12/25  5/9  10/15</td>
-        <td>H F K D</td>
-      </tr>
-    </tbody>
-  </table>
-</html>
+We will leave the plugboard unconfigured in this example, and use the default configuration for the reflector.
 
 ```javascript
-import {
-  ROTORS,
-  GREEK_WHEELS,
-  THIN_REFLECTORS,
-  buildGreekWheelReflector,
-  buildM4Plugboard
-} from "m4";
+import { ROTORS, buildGreekWheelReflector } from "m4";
 
 import Enigma from "enigma";
 
 const enigma = new Enigma()
-  .withRotors(ROTORS.VII, ROTORS.IV, ROTORS.IV)
-  .withRingSettings("G", "N", "O")
-  .withRingSettings("F", "K", "D")
+  .withRotors(ROTORS.I, ROTORS.II, ROTORS.III)
+  .withRingSettings("F", "O", "O")
+  .withRotorPositions("B", "A", "R")
   .withReflector(buildGreekWheelReflector());
 
-console.log(enigma.encryptMessage("What hath God wrought?"));
+console.log(enigma.encryptMessage("WHAT HATH GOD WROUGHT?")); // CUNA ZSKD MUL TOYJWQS?
+
+console.log(enigma.rotorPositions); // ["B", "B", "J"]
+// the rotors have advanced with each keystroke according to the configuation of each rotor
+
+enigma.withRotorPositions("B", "A", "R"); // reset the rotor positions
+console.log(engima.encryptMessage("CUNA ZSKD MUL TOYJWQS?")); // WHAT HATH GOD WROUGHT?
+// the encryption is symmetric!
 ```
 
 ## Acknowledgements
 
 Special thanks to [cryptomuseum.com](http://cryptomuseum.com/index.htm) for their excellent documentation of every Enigma variants, especially for providing the [wiring](https://www.cryptomuseum.com/crypto/enigma/wiring.htm) of its many rotors and reflectors.
+
+Thank you also to my brilliant friend and coworker Jason for his advice that made some semblance of a public interface possible
 
 Disclaimer: this project is just for funsies and the Enigma is not a secure means of encryption. The Germans lost the war for a variety of reasons, including that the Allies were "reading their mail" almost the entire time. So please don't use this library to encrypt anything important.

@@ -211,8 +211,8 @@ describe("Enigma", () => {
   });
 
   describe("encryption", () => {
-    let cipherLetter;
     describe("single character encryption", () => {
+      let cipherLetter;
       describe("when input is a single letter", () => {
         beforeAll(() => {
           enigma
@@ -226,7 +226,7 @@ describe("Enigma", () => {
         });
 
         test("the rotors should advance", () => {
-          expect(enigma.rotorPositions).toEqual(["B", "A", "S"]);
+          expect(enigma.rotorPositions).toMatchObject(["B", "A", "S"]);
         });
 
         it("should perform reversible encryption", () => {
@@ -253,6 +253,27 @@ describe("Enigma", () => {
         it("should return the input character", () => {
           expect(cipherLetter).toBe(" ");
         });
+      });
+    });
+
+    describe("message encryption", () => {
+      let cipherText;
+      const plainText = "WHAT HATH GOD WROUGHT?";
+      beforeAll(() => {
+        enigma
+          .withRingSettings("F", "O", "O")
+          .withRotorPositions("B", "A", "R");
+        cipherText = enigma.encryptMessage(plainText);
+      });
+
+      it("should advance the rotors", () => {
+        expect(enigma.rotorPositions).toMatchObject(["B", "B", "J"]);
+      });
+
+      it("should perform reversible encryption", () => {
+        expect(
+          enigma.withRotorPositions("B", "A", "R").encryptMessage(cipherText)
+        ).toBe(plainText);
       });
     });
   });

@@ -82,9 +82,8 @@ class Enigma {
     }
   };
 
-  encryptMessage = plainText => {
+  encryptMessage = plainText =>
     plainText.split("").map(this.encryptCharacter).join("");
-  };
 
   withPlugboard = plugBoard => {
     this.#plugboard = plugBoard;
