@@ -66,7 +66,7 @@ Sets the "wheel order" (or, in the German instructions, _Walzenlage_), which rep
 
 ### `withPlugboard`
 
-`reflector => enigma` Configures the pluboard. After the electric signal has traversed the rotor assembly, and returned by the path determined by the Reflector, the plugboard would optionally intercept the signal as it came back to a letter and send it to a different letter. This was typically performed with patch cables to swap pairs of letters but the late-war [Enigma Urh](https://www.cryptomuseum.com/crypto/enigma/uhr/index.htm) device made the plugboard step non-reciprocal (i.e., letter mappings were not the same in both directions through the device).
+`reflector => enigma` Configures the pluboard. After the electric signal has traversed the rotor assembly, and returned by the path determined by the Reflector, the plugboard would optionally intercept the signal as it came back to a letter and send it to a different letter. This was typically performed with patch cables to swap pairs of letters but the late-war [Enigma Uhr](https://www.cryptomuseum.com/crypto/enigma/uhr/index.htm) device made the plugboard step non-reciprocal (i.e., letter mappings were not the same in both directions through the device).
 
 ### Working example
 
