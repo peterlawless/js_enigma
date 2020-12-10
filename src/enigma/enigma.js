@@ -18,7 +18,11 @@ class Enigma {
 
   constructor(rotorCount = 3) {
     this.#rotorCount = rotorCount;
-    this.#rotorSettings = new Array(rotorCount).fill({}, 0, rotorCount); // empty configuration but ready for mapping
+    this.#rotorSettings = new Array(rotorCount).fill(
+      { ringPosition: "A" },
+      0,
+      rotorCount
+    ); // empty configuration but ready for mapping
     this.#plugboard = letter => letter; // sensible default: no patch cables installed
   }
 
