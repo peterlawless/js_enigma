@@ -19,7 +19,7 @@ For a more detailed explanation of the inner workings of Enigma, visit [cryptomu
 ## API
 
 ```javascript
-import Enigma from "js_enigma";
+import Enigma from "enigma";
 
 const engima = new Enigma();
 ```
