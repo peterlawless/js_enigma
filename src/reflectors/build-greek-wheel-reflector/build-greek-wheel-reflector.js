@@ -1,5 +1,5 @@
 import { compose, rotorEncrypt, getLetterMappingFrom } from "../../utils";
-import { THIN_REFLECTORS, GREEK_WHEELS } from "../constants";
+import { THIN_REFLECTORS, GREEK_WHEELS } from "./constants";
 
 const buildGreekWheelReflector = (
   thinReflector = THIN_REFLECTORS.b,

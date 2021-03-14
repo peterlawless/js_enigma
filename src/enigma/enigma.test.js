@@ -1,5 +1,5 @@
 import Enigma from "./enigma";
-import { buildGreekWheelReflector } from "../m4";
+import { buildGreekWheelReflector } from "../reflectors";
 import { ROTORS } from "../constants";
 
 describe("Enigma", () => {

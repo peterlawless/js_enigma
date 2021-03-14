@@ -1,5 +1,5 @@
 import buildGreekWheelReflector from "./build-greek-wheel-reflector";
-import { GREEK_WHEELS, THIN_REFLECTORS } from "../constants";
+import { GREEK_WHEELS, THIN_REFLECTORS } from "./constants";
 
 describe("buildGreekWheelReflector", () => {
   it("should return correct letter mapping given default settings", () => {
